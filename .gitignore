@@ -4,3 +4,6 @@ _*_.tex
 *.aux
 *.pdf
 *.synctex.gz
+
+# Org-mode exports
+*.tex
