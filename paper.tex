@@ -1,0 +1,66 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\author{Marten Lienen}
+\date{\today}
+\title{Computations with random variables}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+\section{Our Approach}
+
+\subsection{Basic Arithmethic}
+
+Let $X, Y$ be two independent random variables with gaussian mixture
+distributions.
+\begin{equation*}
+  X \sim \sum_{i = 1}^{n} \alpha_{i} \cdot \mathcal{N}(\mu_{i}, \sigma_{i}^{2})
+\end{equation*}
+\begin{equation*}
+  Y \sim \sum_{i = 1}^{m} \beta_{i} \cdot \mathcal{N}(\nu_{i}, \tau_{i}^{2})
+\end{equation*}
+For future reference we will also define random variables for the components.
+\begin{equation*}
+  X_{i} \sim \mathcal{N}(\mu_{i}, \sigma_{i}^{2}), Y_{i} \sim \mathcal{N}(\nu_{i}, \tau_{i}^{2})
+\end{equation*}
+
+Let $f : \mathbb{R} \times \mathbb{R} \mapsto \mathbb{R}$ be monotonic and
+invertible in the first argument and $Z = f(X, Y)$ the application of $f$ to $X$
+and $Y$.  Then we can express the joint PDF of $Z$ and $Y$ in terms of the joint
+PDF of $X$ and $Y$ in the following way.
+\begin{align*}
+  p(Z = z, Y = y) & = p(Z = z \mid Y = y) \cdot p(Y = y)\\
+                  & = \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot p(X = f^{-1}(y, z) \mid Y = y) \cdot p(Y = y) \textit{Change of Variables, Murphy 2.6.2}\\
+                  & = \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot p(X = f^{-1}(y, z)) \cdot p(Y = y) \textit{$X$ and $Y$ are independent}
+\end{align*}
+Using this result we can infer the general form of $Z$.
+\begin{align*}
+  p(Z = z) & = \int_{-\infty}^{\infty} p(Z = z, Y = y)~\mathrm{d}y\\
+           & = \int_{-\infty}^{\infty} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot p(X = f^{-1}(y, z)) \cdot p(Y = y)~\mathrm{d}y\\
+           & = \int_{-\infty}^{\infty} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot \left( \sum_{i = 1}^{n} \alpha_{i} \cdot \mathcal{N}(f^{-1}(y, z) \mid \mu_{i}, \sigma_{i}^{2}) \right) \cdot \left( \sum_{j = 1}^{m} \beta_{j} \cdot \mathcal{N}(y \mid \nu_{j}, \tau_{j}^{2}) \right)~\mathrm{d}y\\
+           & = \sum_{i = 1}^{n} \sum_{j = 1}^{m} \alpha_{i}\beta_{j} \int_{-\infty}^{\infty} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot \mathcal{N}(f^{-1}(y, z) \mid \mu_{i}, \sigma_{i}^{2}) \cdot \mathcal{N}(y \mid \nu_{j}, \tau_{j}^{2})~\mathrm{d}y\\
+           & = \sum_{i = 1}^{n} \sum_{j = 1}^{m} \alpha_{i}\beta_{j} \int_{-\infty}^{\infty} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot p(X_{i} = f^{-1}(y, z)) \cdot p(Y_{j} = y)~\mathrm{d}y\\
+           & = \sum_{i = 1}^{n} \sum_{j = 1}^{m} \alpha_{i}\beta_{j} \int_{-\infty}^{\infty} p(f(X_{i}, y) = z, Y_{j} = y)~\mathrm{d}y\\
+           & = \sum_{i = 1}^{n} \sum_{j = 1}^{m} \alpha_{i}\beta_{j} \cdot p(f(X_{i}, Y_{j}) = z)\\
+\end{align*}
+We see, that $Z$ again has a mixture distribution with $n \cdot m$
+components of unkown distributions.
+
+\end{document}
