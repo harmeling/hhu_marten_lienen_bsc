@@ -18,6 +18,7 @@
 \usepackage{amsthm}
 
 \newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
 \newtheorem{example}{Example}
 
 \author{Marten Lienen}
@@ -31,6 +32,64 @@
 \section{Introduction}
 
 \section{Our Approach}
+
+\subsection{Scalars and Random Variables}
+
+Let $X$ be a random variable with a gaussian mixture distribution.
+\begin{equation*}
+  X \sim \sum_{i = 1}^{n} \alpha_{i} \cdot \mathcal{N}(\mu_{i}, \sigma_{i}^{2})
+\end{equation*}
+
+\begin{lemma}
+  \begin{equation*}
+    -X \sim \sum_{i = 1}^{n} \alpha_{i} \cdot \mathcal{N}(-\mu_{i}, \sigma_{i}^{2})
+  \end{equation*}
+\end{lemma}
+
+\begin{proof}
+  Trivial.
+\end{proof}
+
+\begin{lemma}
+  Let $f \in \mathbb{R}$.
+  \begin{equation*}
+    f + X = X + f \sim \sum_{i = 1}^{n} \alpha_{i} \cdot \mathcal{N}(\mu_{i} + f, \sigma_{i}^{2})
+  \end{equation*}
+\end{lemma}
+
+\begin{proof}
+  \begin{align*}
+    p(X + f = x) & = p(X = x - f) \cdot \left| \frac{\mathrm{d}(x + f)}{\mathrm{d}x} \right| = p(X = x - f)\\
+                 & = \sum_{i = 1}^{n} \alpha_{i} \cdot \mathcal{N}(x - f \mid \mu_{i}, \sigma_{i}^{2})\\
+                 & = \sum_{i = 1}^{n} \alpha_{i} \cdot \mathcal{N}(x \mid \mu_{i} + f, \sigma_{i}^{2})
+  \end{align*}
+\end{proof}
+
+\begin{corollary}
+  Let $f \in \mathbb{R}$.
+  \begin{equation*}
+    X - f \sim \sum_{i = 1}^{n} \alpha_{i} \cdot \mathcal{N}(\mu_{i} - f, \sigma_{i}^{2})
+  \end{equation*}
+\end{corollary}
+
+\begin{proof}
+  \begin{equation*}
+    X - f = X + (-f)
+  \end{equation*}
+\end{proof}
+
+\begin{corollary}
+  Let $f \in \mathbb{R}$.
+  \begin{equation*}
+    f - X \sim \sum_{i = 1}^{n} \alpha_{i} \cdot \mathcal{N}(f - \mu_{i}, \sigma_{i}^{2})
+  \end{equation*}
+\end{corollary}
+
+\begin{proof}
+  \begin{equation*}
+    f - X = f + (-X)
+  \end{equation*}
+\end{proof}
 
 \subsection{Basic Arithmethic}
 
