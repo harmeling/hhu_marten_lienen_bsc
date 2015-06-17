@@ -14,6 +14,12 @@
 \usepackage{wasysym}
 \usepackage{amssymb}
 \usepackage{hyperref}
+
+\usepackage{amsthm}
+
+\newtheorem{lemma}{Lemma}
+\newtheorem{example}{Example}
+
 \author{Marten Lienen}
 \date{\today}
 \title{Computations with random variables}
@@ -62,5 +68,14 @@ Using this result we can infer the general form of $Z$.
 \end{align*}
 We see, that $Z$ again has a mixture distribution with $n \cdot m$
 components of unkown distributions.
+
+\begin{example}
+  If $f = +$ or $f = -$, $f$ is monotonic and invertible in the first
+  argument. Also $f$ of two normally distributed random variables is again
+  normally distributed, so $Z$ is another mixture of gaussians with components
+  \begin{equation*}
+    Z_{i,j} \sim \mathcal{N}(\mu_{i} + \nu_{j}, \sigma_{i}^{2} + \tau_{j}^{2})
+  \end{equation*}
+\end{example}
 
 \end{document}
