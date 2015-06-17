@@ -73,9 +73,7 @@ Let $X$ be a random variable with a gaussian mixture distribution.
 \end{corollary}
 
 \begin{proof}
-  \begin{equation*}
-    X - f = X + (-f)
-  \end{equation*}
+  $X - f = X + (-f)$
 \end{proof}
 
 \begin{corollary}
@@ -86,9 +84,35 @@ Let $X$ be a random variable with a gaussian mixture distribution.
 \end{corollary}
 
 \begin{proof}
+  $f - X = f + (-X)$
+\end{proof}
+
+\begin{lemma}
+  Let $f \in \mathbb{R} \setminus \{ 0 \}$.
   \begin{equation*}
-    f - X = f + (-X)
+    fX = Xf \sim \sum_{i = 1}^{n} \alpha_{i} \cdot \mathcal{N}(f\mu_{i}, f^{2}\sigma_{i}^{2})
   \end{equation*}
+\end{lemma}
+
+\begin{proof}
+  \begin{align*}
+    p(fX = x) & = \left| \frac{\mathrm{d}\frac{x}{f}}{\mathrm{d}x} \right| \cdot p\left( X = \frac{x}{f} \right)\\
+              & = \left|\frac{1}{f}\right| \cdot p\left( X = \frac{x}{f} \right)\\
+              & = \left|\frac{1}{f}\right| \cdot \sum_{i = 1}^{n} \alpha_{i} \cdot \mathcal{N}\left(\frac{x}{f} \mid \mu_{i}, \sigma_{i}^{2}\right)\\
+              & = \left|\frac{1}{f}\right| \cdot \sum_{i = 1}^{n} \alpha_{i} \cdot |f| \cdot \mathcal{N}\left(x \mid f\mu_{i}, f^{2}\sigma_{i}^{2}\right)\\
+              & = \sum_{i = 1}^{n} \alpha_{i} \cdot \mathcal{N}\left(x \mid f\mu_{i}, f^{2}\sigma_{i}^{2}\right)
+  \end{align*}
+\end{proof}
+
+\begin{corollary}
+  Let $f \in \mathbb{R} \setminus \{ 0 \}$.
+  \begin{equation*}
+    \frac{X}{f} \sim \sum_{i = 1}^{n} \alpha_{i} \cdot \mathcal{N}\left( \frac{\mu_{i}}{f}, \frac{\sigma_{i}^{2}}{f^{2}} \right)
+  \end{equation*}
+\end{corollary}
+
+\begin{proof}
+  $\frac{X}{f} = X \cdot \frac{1}{f}$
 \end{proof}
 
 \subsection{Basic Arithmethic}
