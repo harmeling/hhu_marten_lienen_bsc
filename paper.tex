@@ -187,4 +187,45 @@ in specific cases this might be possible, as we see in the next example.
   Trivial.
 \end{proof}
 
+\subsection{Multiplication}
+
+Multiplication is indeed monotonic and invertible in the first argument, but
+unfortunately gaussian distributions are not closed under it. Actually the
+product of two gaussians has a two-sided chi-squared distribution. So to stay
+inside the realm of mixtures of gaussians, we have to approximate it with yet
+another mixture of gaussians.
+
+Let $X$ and $Y$ be two normally distributed variables
+\begin{equation*}
+  X \sim \mathcal{N}(\mu, \sigma^{2}) \qquad Y \sim \mathcal{N}(\nu, \tau^{2})
+\end{equation*}
+and $Z = X \cdot Y$ their product. Then $Z$ is distributed as follows
+\begin{align*}
+  p(Z = z) & = \int_{-\infty}^{\infty} \frac{1}{|y|} \cdot p\left(X = \frac{z}{y}\right) \cdot p(Y = y)~\mathrm{d}y\\
+           & = \int_{-\infty}^{\infty} \frac{1}{|y|} \cdot \mathcal{N}\left( \frac{z}{y} \mid \mu, \sigma^{2} \right) \cdot \mathcal{N}(y \mid \nu, \tau^{2})~\mathrm{d}y\\
+           & = \int_{-\infty}^{\infty} \frac{1}{|y|} \cdot |y| \cdot \mathcal{N}\left( z \mid y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(y \mid \nu, \tau^{2})~\mathrm{d}y\\
+           & = \int_{-\infty}^{\infty} \mathcal{N}\left( z \mid y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(y \mid \nu, \tau^{2})~\mathrm{d}y
+\end{align*}
+
+We would like to approximate this with Gauss-Hermite quadrature. Therefore we
+have to transform the integrand into the form $f(x) \cdot \exp(-x^{2})$ with the
+following substitution.
+\begin{equation*}
+  x = \frac{y - \nu}{\sqrt{2}\tau} \Leftrightarrow y = \sqrt{2}\tau x + \nu \qquad \frac{\mathrm{d}x}{\mathrm{d}y} = \frac{1}{\sqrt{2}\tau}
+\end{equation*}
+\begin{align*}
+  p(Z = z) & = \int_{-\infty}^{\infty} \mathcal{N}\left( z \mid y\mu, y^{2}\sigma^{2} \right) \cdot \frac{1}{\sqrt{2\pi\tau^{2}}} \exp\left( -\frac{(y - \nu)^{2}}{2\tau^{2}} \right)~\mathrm{d}y\\
+           & = \frac{1}{\sqrt{\pi}} \int_{-\infty}^{\infty} \mathcal{N}\left( z \mid \left(\sqrt{2}\tau x + \nu\right)\mu, \left(\sqrt{2}\tau x + \nu\right)^{2}\sigma^{2} \right) \cdot \exp\left( -x^{2} \right)~\mathrm{d}x
+\end{align*}
+
+Now that we have achieved the right form, we can apply the approximation.
+\begin{equation*}
+  p(Z = z) \approx \sum_{i = 1}^{n} \frac{w_{i}}{\sqrt{\pi}} \cdot \mathcal{N}\left( z \mid \left(\sqrt{2 \tau^{2}} x_{i} + \nu\right)\mu, \left(\sqrt{2 \tau^{2}} x_{i} + \nu\right)^{2}\sigma^{2} \right)
+\end{equation*}
+where $x_{i}$ and $w_{i}$ are the positions and weights as defined by the
+Gauss-Hermite quadrature method.
+
+So we have approximated the product as a mixture of gaussians. Curiously the
+weights even sum to $1$.
+
 \end{document}
