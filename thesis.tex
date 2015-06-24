@@ -1,4 +1,4 @@
-\documentclass[11pt]{article}
+\documentclass[11pt,a4paper]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{fixltx2e}
@@ -34,11 +34,12 @@
 
 \maketitle
 
-\section{Introduction}
+\chapter{Introduction}
 
-\section{Our Approach}
+\chapter{Our Approach}
 
-\subsection{Scalars and Random Variables}
+
+\section{Scalars and Random Variables}
 
 Let $X$ be a random variable with a gaussian mixture distribution.
 \begin{equation*}
@@ -120,7 +121,7 @@ Let $X$ be a random variable with a gaussian mixture distribution.
   $\frac{X}{f} = X \cdot \frac{1}{f}$
 \end{proof}
 
-\subsection{Basic Arithmethic}
+\section{Basic Arithmethic}
 
 Let $X, Y$ be two independent random variables with gaussian mixture
 distributions.
@@ -192,7 +193,7 @@ in specific cases this might be possible, as we see in the next example.
   Trivial.
 \end{proof}
 
-\subsection{Multiplication}
+\section{Multiplication}
 
 Multiplication is indeed monotonic and invertible in the first argument, but
 unfortunately gaussian distributions are not closed under it. Actually the
@@ -233,7 +234,7 @@ Gauss-Hermite quadrature method.
 So we have approximated the product as a mixture of gaussians. Curiously the
 weights even sum to $1$.
 
-\section{References}
+\chapter{References}
 
 \printbibliography
 
