@@ -1,11 +1,2 @@
 # LaTeX build artifacts
-*.log
-_*_.tex
-*.aux
-*.pdf
-*.synctex.gz
-*.fmt
-*.out
-
-# Org-mode exports
-*.tex
+thesis.*

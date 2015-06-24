@@ -13,13 +13,16 @@
 \usepackage{marvosym}
 \usepackage{wasysym}
 \usepackage{amssymb}
-\usepackage{hyperref}
+\usepackage[hidelinks]{hyperref}
+\usepackage[style=alphabetic]{biblatex}
 
 \usepackage{amsthm}
 
 \newtheorem{lemma}{Lemma}
 \newtheorem{corollary}{Corollary}
 \newtheorem{example}{Example}
+
+\addbibresource{references.bib}
 
 \author{Marten Lienen}
 \date{\today}
@@ -227,5 +230,9 @@ Gauss-Hermite quadrature method.
 
 So we have approximated the product as a mixture of gaussians. Curiously the
 weights even sum to $1$.
+
+\section{References}
+
+\printbibliography
 
 \end{document}
