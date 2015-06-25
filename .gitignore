@@ -1,2 +1,5 @@
 # LaTeX build artifacts
 thesis.*
+
+# AUCTeX artifacts
+_region_*
