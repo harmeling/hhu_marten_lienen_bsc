@@ -24,6 +24,8 @@
 \newtheorem{corollary}{Corollary}
 \newtheorem{example}{Example}
 
+\DeclareMathOperator{\supp}{supp}
+
 \addbibresource{references.bib}
 
 \author{Marten Lienen}
@@ -44,6 +46,127 @@
 
 \chapter{Our Approach}
 
+\section{Closure of Mixtures}
+
+Let $n \in \mathbb{N}_{0}$, $X$ a real random variable with mixture distribution
+and $Y_{i}, i \in \{ 1, \dots, n \}$ another $n$ real random variables with
+mixture distributions.
+\begin{equation*}
+  p(X = x) = \sum_{i = 1}^{m} \alpha_{i} \cdot p(X_{i} = x) \qquad p(Y_{i} = y) = \sum_{j = 1}^{m_{i}} \beta_{i,j} \cdot p(Y_{i,j} = y)
+\end{equation*}
+
+Consider a function $f : S \times_{i = 1}^{n} S_{i} \rightarrow \mathbb{R}$,
+where $S \supseteq \supp(X)$ and
+$S_{i} \supseteq \supp(Y_{i}), i \in \{ 1, \dots, n \}$. Then we might ask
+ourselves, how $Z = f(X, Y_{1}, \dots, Y_{n})$ is distributed. So we are looking
+to evaluate
+\begin{equation*}
+  p(Z = z) = \int_{S_{n}}\dots\int_{S_{1}} p(Z = 1, Y_{1} = y_{1}, \dots, Y_{n} = y_{n})~\mathrm{d}y_{1}\dots\mathrm{d}y_{n}
+\end{equation*}
+
+First, we have to tie the joint PDF of $Z$ and $Y_{1, \dots, n}$ to the joint
+PDF of $X$ and $Y_{1, \dots, n}$. Such an expression can be derived using
+\emph{multivariate change of variables} \cite[chapter~2.6.2.1]{murphy}, which I
+will restate here.
+
+\begin{lemma}[Multivariate change of variables]
+  \label{lemma:multivariate-change}
+  Let $f : \mathbb{R}^{n} \rightarrow \mathbb{R}^{n}$ be differentiable and
+  invertible, $X \in \mathbb{R}^{n}$ a random vector and $Y = f(X)$. Then the
+  distribution of $Y$ is given by
+  \begin{equation*}
+    p(Y = y) = \left| \det J \right| \cdot p(X = f^{-1}(y))
+  \end{equation*}
+  where $J$ is the Jacobian of $f^{-1}$, i.e.
+  \begin{equation*}
+    J = \frac{\partial X}{\partial Y} = \begin{pmatrix}
+      \frac{\partial X_{1}}{\partial Y_{1}} & \cdots & \frac{\partial X_{1}}{\partial Y_{n}}\\
+      \vdots & \ddots & \vdots\\
+      \frac{\partial X_{n}}{\partial Y_{1}} & \cdots & \frac{\partial X_{n}}{\partial Y_{n}}
+    \end{pmatrix}
+  \end{equation*}
+\end{lemma}
+
+\begin{lemma}
+  \label{lemma:joint-pdf}
+  If $f$ is differentiable and invertible in the first argument, we can express
+  the joint PDF of $Z$ and $Y_{1, \dots, n}$ in terms of the joint PDF of $X$
+  and $Y_{1, \dots, n}$ as
+  \begin{equation*}
+    p(Z = z, Y_{1, \dots, n} = y_{1, \dots, n}) = \left| \frac{\mathrm{d}f_{y_{1}, \dots, y_{n}}^{-1}(z)}{\mathrm{d}z} \right| \cdot p\left(X = f_{y_{1}, \dots, y_{n}}^{-1}(z), Y_{1, \dots, n} = y_{1, \dots, n}\right)
+  \end{equation*}
+\end{lemma}
+\begin{proof}
+  Define $g : S \times_{i = 1}^{n} S_{i} \rightarrow \mathbb{R}^{n + 1}$ as
+  \begin{equation*}
+    g \begin{pmatrix}
+      x\\y_{1}\\\vdots\\y_{n}
+    \end{pmatrix} = \begin{pmatrix}
+      f(x, y_{1}, \dots, y_{n})\\
+      y_{1}\\\vdots\\y_{n}
+    \end{pmatrix}
+  \end{equation*}
+  Then $g$ is invertible and differentiable and the inverse is given by
+  \begin{equation*}
+    g^{-1}\begin{pmatrix}
+      z\\y_{1}\\\vdots\\y_{n}
+    \end{pmatrix} = \begin{pmatrix}
+      f_{y_{1}, \dots, y_{n}}^{-1}(z)\\
+      y_{1}\\\vdots\\y_{n}
+    \end{pmatrix}
+  \end{equation*}
+  Next we examine the Jacobian $J$ of $g^{-1}$. Let
+  $(z, y_{1}, \dots, y_{n})^{T} \in \mathbb{R}^{n + 1}$.
+  \begin{equation*}
+    J :=
+    \begin{pmatrix}
+      \frac{\mathrm{d}f_{y_{1}, \dots, y_{n}}^{-1}}{\partial z} & \frac{\mathrm{d}f_{y_{1}, \dots, y_{n}}^{-1}}{\partial y_{1}} & \cdots & \frac{\mathrm{d}f_{y_{1}, \dots, y_{n}}^{-1}}{\partial y_{n}}\\
+      \frac{\mathrm{d} y_{1}}{\mathrm{d} z} & \frac{\mathrm{d} y_{1}}{\mathrm{d} y_{1}} & \cdots & \frac{\mathrm{d} y_{1}}{\mathrm{d} y_{n}}\\
+      \vdots & \vdots & \ddots & \vdots\\
+      \frac{\mathrm{d} y_{n}}{\mathrm{d} z} & \frac{\mathrm{d} y_{n}}{\mathrm{d} y_{1}} & \cdots & \frac{\mathrm{d} y_{n}}{\mathrm{d} y_{n}}
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+      \frac{\mathrm{d}f_{y_{1}, \dots, y_{n}}^{-1}}{\partial z} & \frac{\mathrm{d}f_{y_{1}, \dots, y_{n}}^{-1}}{\partial y_{1}} & \cdots & \frac{\mathrm{d}f_{y_{1}, \dots, y_{n}}^{-1}}{\partial y_{n}}\\
+      0 & 1 & \cdots & 0\\
+      \vdots & \vdots & \ddots & \vdots\\
+      0 & 0 & \cdots & 1
+    \end{pmatrix}
+  \end{equation*}
+  $J$ is an upper-triangular matrix, which means
+  \begin{equation*}
+    \det J = \frac{\mathrm{d}f_{y_{1}, \dots, y_{n}}^{-1}}{\partial z}
+  \end{equation*}
+  Therefore the claimed equality follows from lemma \ref{lemma:multivariate-change}.
+\end{proof}
+
+Equipped with lemma \ref{lemma:joint-pdf} we can now derive the general form of
+$Z$'s distribution.
+
+\begin{lemma}
+  If $f$ is differentiable and invertible in the first argument, the
+  distribution of $Z$ is a mixture distribution given by the following equation
+  \begin{equation*}
+    p(Z = z) = \sum_{i = 1}^{m} \sum_{k_{1} = 1}^{m_{1}} \dots \sum_{k_{n} = 1}^{m_{n}} \alpha_{i} \left( \prod_{j = 1}^{n} \beta_{j,k_{j}} \right) p(f(X_{i}, Y_{1,k_{1}}, \dots, Y_{n,k_{n}}) = z)
+  \end{equation*}
+\end{lemma}
+\begin{proof}
+  Let $x = f_{y_{1}, \dots, y_{n}}^{-1}(z)$.
+  \begin{align*}
+    p(Z = z) & = \int_{S_{n}} \dots \int_{S_{1}} p(Z = z, Y_{1, \dots, n} = y_{1, \dots, n})~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
+             & = \int_{S_{n}} \dots \int_{S_{1}} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot p\left(X = f_{y_{1}, \dots, y_{n}}^{-1}(z), Y_{1, \dots, n} = y_{1, \dots, n}\right)~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
+             & = \int_{S_{n}} \dots \int_{S_{1}} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot p\left(X = f_{y_{1}, \dots, y_{n}}^{-1}(z)\right) \prod_{j = 1}^{n} p\left(Y_{j} = y_{j}\right)~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
+             & = \int_{S_{n}} \dots \int_{S_{1}} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot \left(\sum_{i = 1}^{m} \alpha_{i} \cdot p(X_{i} = x)\right) \prod_{j = 1}^{n} \left(\sum_{k = 1}^{m_{j}} \beta_{j,k} \cdot p(Y_{j,k} = y_{j})\right)~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
+             & = \sum_{i = 1}^{m} \sum_{k_{1} = 1}^{m_{1}} \dots \sum_{k_{n} = 1}^{m_{n}} \alpha_{i} \left( \prod_{j = 1}^{n} \beta_{j,k_{j}} \right) \int_{S_{n}} \dots \int_{S_{1}} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot p(X_{i} = x) \cdot \prod_{j = 1}^{n} p(Y_{j,k_{j}} = y_{j})~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
+             & = \sum_{i = 1}^{m} \sum_{k_{1} = 1}^{m_{1}} \dots \sum_{k_{n} = 1}^{m_{n}} \alpha_{i} \left( \prod_{j = 1}^{n} \beta_{j,k_{j}} \right) \int_{S_{n}} \dots \int_{S_{1}} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot p(X_{i} = x, Y_{1,k_{1}} = y_{1}, \dots, Y_{n,k_{n}} = y_{n})~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
+             & = \sum_{i = 1}^{m} \sum_{k_{1} = 1}^{m_{1}} \dots \sum_{k_{n} = 1}^{m_{n}} \alpha_{i} \left( \prod_{j = 1}^{n} \beta_{j,k_{j}} \right) \int_{S_{n}} \dots \int_{S_{1}} p(f(X_{i}, Y_{1,k_{1}}, \dots, Y_{n,k_{n}}) = z, Y_{1,k_{1}} = y_{1}, \dots, Y_{n,k_{n}} = y_{n})~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
+             & = \sum_{i = 1}^{m} \sum_{k_{1} = 1}^{m_{1}} \dots \sum_{k_{n} = 1}^{m_{n}} \alpha_{i} \left( \prod_{j = 1}^{n} \beta_{j,k_{j}} \right) p(f(X_{i}, Y_{1,k_{1}}, \dots, Y_{n,k_{n}}) = z)
+  \end{align*}
+\end{proof}
+
+\section{Monadic Functions}
+
+\section{Diadic Functions}
 
 \section{Scalars and Random Variables}
 
@@ -129,54 +252,6 @@ Let $X$ be a random variable with a gaussian mixture distribution.
 
 \section{Basic Arithmethic}
 
-Let $X, Y$ be two independent random variables with gaussian mixture
-distributions.
-\begin{equation*}
-  X \sim \sum_{i = 1}^{n} \alpha_{i} \cdot \mathcal{N}(\mu_{i}, \sigma_{i}^{2}) \qquad Y \sim \sum_{i = 1}^{m} \beta_{i} \cdot \mathcal{N}(\nu_{i}, \tau_{i}^{2})
-\end{equation*}
-For future reference we will also define random variables for the components.
-\begin{equation*}
-  X_{i} \sim \mathcal{N}(\mu_{i}, \sigma_{i}^{2}) \qquad Y_{i} \sim \mathcal{N}(\nu_{i}, \tau_{i}^{2})
-\end{equation*}
-
-Let $f : \mathbb{R} \times \mathbb{R} \mapsto \mathbb{R}$ be monotonic and
-invertible in the first argument and $Z = f(X, Y)$ the application of $f$ to $X$
-and $Y$.
-
-\begin{lemma}
-  The joint PDF of $Z$ and $Y$ is expressible in terms of the joint PDF of $X$
-  and $Y$.
-\end{lemma}
-\begin{proof}
-  Let $x = f^{-1}(y, z)$.
-  \begin{align*}
-    p(Z = z, Y = y) & = p(Z = z \mid Y = y) \cdot p(Y = y)\\
-                    & = \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot p(X = f^{-1}(y, z) \mid Y = y) \cdot p(Y = y) \quad\textit{Change of Variables, Murphy 2.6.2}\\
-                    & = \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot p(X = f^{-1}(y, z)) \cdot p(Y = y) \quad\textit{$X$ and $Y$ are independent}\\
-                    & = \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot p(X = f^{-1}(y, z), Y = y)
-  \end{align*}
-\end{proof}
-
-Using this result we can infer the general form of $Z$.
-
-\begin{lemma}
-  $Z$ has a mixture distribution with $n \cdot m$ components.
-  \begin{equation*}
-    p(Z = z) = \sum_{i = 1}^{n} \sum_{j = 1}^{m} \alpha_{i}\beta_{j} \cdot p(f(X_{i}, Y_{j}) = z)
-  \end{equation*}
-\end{lemma}
-\begin{proof}
-  \begin{align*}
-    p(Z = z) & = \int_{-\infty}^{\infty} p(Z = z, Y = y)~\mathrm{d}y\\
-             & = \int_{-\infty}^{\infty} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot p(X = f^{-1}(y, z)) \cdot p(Y = y)~\mathrm{d}y\\
-             & = \int_{-\infty}^{\infty} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot \left( \sum_{i = 1}^{n} \alpha_{i} \cdot \mathcal{N}(f^{-1}(y, z) \mid \mu_{i}, \sigma_{i}^{2}) \right) \cdot \left( \sum_{j = 1}^{m} \beta_{j} \cdot \mathcal{N}(y \mid \nu_{j}, \tau_{j}^{2}) \right)~\mathrm{d}y\\
-             & = \sum_{i = 1}^{n} \sum_{j = 1}^{m} \alpha_{i}\beta_{j} \int_{-\infty}^{\infty} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot \mathcal{N}(f^{-1}(y, z) \mid \mu_{i}, \sigma_{i}^{2}) \cdot \mathcal{N}(y \mid \nu_{j}, \tau_{j}^{2})~\mathrm{d}y\\
-             & = \sum_{i = 1}^{n} \sum_{j = 1}^{m} \alpha_{i}\beta_{j} \int_{-\infty}^{\infty} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot p(X_{i} = f^{-1}(y, z)) \cdot p(Y_{j} = y)~\mathrm{d}y\\
-             & = \sum_{i = 1}^{n} \sum_{j = 1}^{m} \alpha_{i}\beta_{j} \int_{-\infty}^{\infty} p(f(X_{i}, y) = z, Y_{j} = y)~\mathrm{d}y\\
-             & = \sum_{i = 1}^{n} \sum_{j = 1}^{m} \alpha_{i}\beta_{j} \cdot p(f(X_{i}, Y_{j}) = z)
-  \end{align*}
-\end{proof}
-
 However with a general $f$ we cannot determine the component distributions. But
 in specific cases this might be possible, as we see in the next example.
 
@@ -240,7 +315,24 @@ Gauss-Hermite quadrature method.
 So we have approximated the product as a mixture of gaussians. Curiously the
 weights even sum to $1$.
 
-\chapter{References}
+\section{Division}
+
+Let $X$ and $Y$ be two normally distributed variables
+\begin{equation*}
+  X \sim \mathcal{N}(\mu, \sigma^{2}) \qquad Y \sim \mathcal{N}(\nu, \tau^{2})
+\end{equation*}
+and $Z = \frac{X}{Y}$ their quotient. Then $Z$ is distributed as follows
+\begin{align*}
+  p(Z = z) & = \int_{-\infty}^{\infty} |y| \cdot p\left(X = zy\right) \cdot p(Y = y)~\mathrm{d}y\\
+           & = \int_{-\infty}^{\infty} |y| \cdot \mathcal{N}\left( zy \mid \mu, \sigma^{2} \right) \cdot \mathcal{N}(y \mid \nu, \tau^{2})~\mathrm{d}y\\
+           & = \int_{-\infty}^{\infty} |y| \cdot \frac{1}{|y|} \cdot \mathcal{N}\left( z \mid \frac{\mu}{y}, \frac{\sigma^{2}}{y^{2}} \right) \cdot \mathcal{N}(y \mid \nu, \tau^{2})~\mathrm{d}y\\
+           & = \int_{-\infty}^{\infty} \mathcal{N}\left( z \mid \frac{\mu}{y}, \frac{\sigma^{2}}{y^{2}} \right) \cdot \mathcal{N}(y \mid \nu, \tau^{2})~\mathrm{d}y
+\end{align*}
+Now we can apply the same substitution as for multiplication to bring it into
+Gauss-Hermite quadrature form and get
+\begin{equation*}
+  p(Z = z) \approx \sum_{i = 1}^{n} \frac{w_{i}}{\sqrt{\pi}} \cdot \mathcal{N}\left( z \mid \frac{\mu}{\sqrt{2 \tau^{2}} x_{i} + \nu}, \frac{\sigma^{2}}{\left(\sqrt{2 \tau^{2}} x_{i} + \nu\right)^{2}} \right)
+\end{equation*}
 
 \printbibliography
 
