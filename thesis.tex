@@ -1,17 +1,25 @@
 \documentclass[11pt,a4paper]{book}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+
+% Math symbols and environments
+%
+% These have to be imported before some later package to prevent some
+% redefinition error.
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+
+% Imported by org-mode export
 \usepackage{fixltx2e}
 \usepackage{longtable}
 \usepackage{float}
 \usepackage{wrapfig}
 \usepackage{rotating}
 \usepackage[normalem]{ulem}
-\usepackage{amsmath}
 \usepackage{textcomp}
 \usepackage{marvosym}
 \usepackage{wasysym}
-\usepackage{amssymb}
 
 \usepackage{graphicx}
 \usepackage[margin=3cm]{geometry}
@@ -19,8 +27,6 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage[style=alphabetic]{biblatex}
 \usepackage{fancyhdr}
-
-\usepackage{amsthm}
 
 \newtheorem{lemma}{Lemma}
 \newtheorem{corollary}{Corollary}
