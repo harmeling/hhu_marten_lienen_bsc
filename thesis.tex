@@ -20,6 +20,12 @@
 % Do not indent paragraphs
 \usepackage{parskip}
 
+% Syntax highlighting
+\usepackage{minted}
+
+% Set global minted options
+\setminted{linenos, autogobble, frame=lines, framesep=2mm}
+
 \newtheorem{lemma}{Lemma}
 \newtheorem{corollary}{Corollary}
 \newtheorem{example}{Example}
@@ -85,7 +91,104 @@
 
 \chapter{Introduction}
 
+Let $X_{i}, i \in \{ 1, \dots, n \}$ and $Y$ be random variables and define $Z$ as
+\begin{equation*}
+  Z := \frac{\sum_{i = 1}^{n} X_{i}}{Y}
+\end{equation*}
+How do you write a program to calculate $Z$? If the variables were floats, it
+would be easy. Even with random variables involved, it might stay that way. For
+very simple examples you may just work it out by hand.
+\begin{equation*}
+  X_{i} \sim \mathcal{N}(\mu_{i}, \sigma_{i}^{2}), i \in \{ 1, 2 \}, \quad Y = 2 \quad \Rightarrow \quad Z \sim \mathcal{N}\left( \frac{\mu_{1} + \mu_{2}}{2}, \frac{\sigma_{1}^{2} + \sigma_{2}^{2}}{2^{2}} \right)
+\end{equation*}
+
+If, however, we complicate this example a little more by declaring $Y$ to be
+gaussian distributed as well, the resulting distribution of $Z$ becomes so
+complicated, that you need computer assistance to work it out. The maple program
+in listing \ref{lst:maple-pdf} computes this and produces the unwieldy
+expression in figure \ref{fig:maple-pdf}.
+\begin{listing}
+  \begin{minted}{python}
+    with(Statistics);
+    X := [RandomVariable(Normal(mu, sigma)),
+          RandomVariable(Normal(nu, tau))];
+    Y := RandomVariable(Normal(alpha, beta));
+    Z := (X[1] + X[2]) / Y;
+    display(PDF(Z, z));
+  \end{minted}
+  \caption{A maple program to compute the PDF of $Z$ symbolically}
+  \label{lst:maple-pdf}
+\end{listing}
+\begin{figure}
+  \centering
+  \includegraphics[width=300px]{thesis/maple-pdf}
+  \caption{PDF, that maple came up with}
+  \label{fig:maple-pdf}
+\end{figure}
+
+But in yet more general cases even computers will not be able to find a PDF
+symbolically or the found expression may take exorbitant resources to
+evaluate. If for example we use three different distributions, maple does find
+an expression, but I cannot plot it, because my computer runs out of memory. At
+this point you have to resort to sampling. The church program in listing
+\ref{lst:church-pdf} plots the PDF of $Z$ in figure \ref{fig:church-pdf}.
+\begin{listing}
+  \begin{minted}{scheme}
+    (define (sample)
+      (define x1 (gaussian 1 1))
+      (define x2 (gamma 1 1))
+      (define y (exponential 1))
+
+      (/ (+ x1 x2) y))
+
+    (define samples (repeat 100000 sample))
+  \end{minted}
+  \caption{}
+  \label{lst:church-pdf}
+\end{listing}
+\begin{figure}
+  \centering
+  \includegraphics[width=300px]{thesis/church-pdf}
+  \caption{Approximation to a complicated PDF obtained by sampling}
+  \label{fig:church-pdf}
+\end{figure}
+
+On the one hand symbolic solutions are resource consuming and on the other hand
+sampling gives results in a form, that is not very reusable. You are restricted
+to sample statistics and guessing the PDF and other statistics from that. This
+thesis will explore the middleground between these two. First, we will use
+sampling and EM to convert the input distributions into a representation, that
+you can work with with a combination of symbolics and numerics. Then we will
+execute further computations with these easy to handle approximations.
+
+We will
+\begin{itemize}
+\item give a more in-depth description of the problem (Section \ref{ch:problem})
+\item prove, that mixture distributions are closed under certain operations and
+  are thus a good fit as a mathematical framework (Section \ref{ch:theory})
+\item explore the viability of different component distributions and numerical
+  integration algorithms
+\item provide a julia implementation (Section \ref{ch:implementation})
+\item compare our results to ones that were derived symbolically or through
+  sampling (Section \ref{ch:comparisons})
+\end{itemize}
+
+\chapter{The Problem}
+\label{ch:problem}
+
+Let $X$ be a random variable, $f$ some function defined on $\supp(X)$ and
+$Y = f(X)$. The task is then to derive the probability distribution of $Y$ from
+the known distribution of $X$. If $X$ is categorical, you
+
+We will concentrate on continuous $X$. So $X$ has a probability density function
+$p(X)~:~\mathbb{R}~\rightarrow~[0,~1]$ and we can write down the following
+expression for the probability density function of $Y$.
+\begin{equation*}
+  p(Y = y) = \int_{1}
+\end{equation*}
+
 \chapter{Our Approach}
+\label{ch:theory}
 
 \section{Closure of Mixtures}
 
@@ -374,6 +477,12 @@ Gauss-Hermite quadrature form and get
 \begin{equation*}
   p(Z = z) \approx \sum_{i = 1}^{n} \frac{w_{i}}{\sqrt{\pi}} \cdot \mathcal{N}\left( z \mid \frac{\mu}{\sqrt{2 \tau^{2}} x_{i} + \nu}, \frac{\sigma^{2}}{\left(\sqrt{2 \tau^{2}} x_{i} + \nu\right)^{2}} \right)
 \end{equation*}
+
+\chapter{Implementation}
+\label{ch:implementation}
+
+\chapter{Comparisons}
+\label{ch:comparisons}
 
 \printbibliography
 

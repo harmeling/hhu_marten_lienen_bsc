@@ -11,7 +11,7 @@ def main():
 
     numbers = list(map(float, input))
 
-    plt.hist(numbers, bins=300)
+    plt.hist(numbers, bins=300, range=(-15, 15))
     plt.savefig(sys.argv[1])
 
 if __name__ == "__main__":
