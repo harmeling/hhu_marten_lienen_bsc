@@ -438,6 +438,8 @@ and $Z = X \cdot Y$ their product. Then $Z$ is distributed as follows
            & = \int_{-\infty}^{\infty} \mathcal{N}\left( z \mid y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(y \mid \nu, \tau^{2})~\mathrm{d}y
 \end{align*}
 
+\subsection{Gauss-Hermite}
+
 We would like to approximate this with Gauss-Hermite quadrature. Therefore we
 have to transform the integrand into the form $f(x) \cdot \exp(-x^{2})$ with the
 following substitution.
@@ -458,6 +460,62 @@ Gauss-Hermite quadrature method.
 
 So we have approximated the product as a mixture of gaussians. Curiously the
 weights even sum to $1$.
+
+\subsection{Gauss-Laguerre}
+
+\begin{align*}
+  p(Z = z) & = \int_{-\infty}^{\infty} \mathcal{N}\left( z \mid y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(y \mid \nu, \tau^{2})~\mathrm{d}y\\
+           & = \int_{-\infty}^{0} \mathcal{N}\left( z \mid y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(y \mid \nu, \tau^{2})~\mathrm{d}y + \int_{0}^{\infty} \mathcal{N}\left( z \mid y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(y \mid \nu, \tau^{2})~\mathrm{d}y\\
+           & = -\int_{\infty}^{0} \mathcal{N}\left( z \mid -y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(-y \mid \nu, \tau^{2})~\mathrm{d}y + \int_{0}^{\infty} \mathcal{N}\left( z \mid y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(y \mid \nu, \tau^{2})~\mathrm{d}y\\
+           & = \int_{0}^{\infty} \mathcal{N}\left( z \mid -y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(-y \mid \nu, \tau^{2})~\mathrm{d}y + \int_{0}^{\infty} \mathcal{N}\left( z \mid y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(y \mid \nu, \tau^{2})~\mathrm{d}y\\
+\end{align*}
+
+Both of these integrals can be solved approximately through Gauss-Laguerre
+integration. Yet the integrands are not sufficiently differentiable in $0$, so
+we integrate over $[\varepsilon, \infty]$ for some $\varepsilon > 0$ instead of
+$[0, \infty]$. We begin with rearranging the first integrand to the form
+$f(y) * e^{-y}$.
+\begin{align*}
+  & \int_{\varepsilon}^{\infty} \mathcal{N}\left( z \mid -y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(-y \mid \nu, \tau^{2})~\mathrm{d}y \\
+  =& \int_{\varepsilon}^{\infty} \mathcal{N}\left( z \mid -y\mu, y^{2}\sigma^{2} \right) \cdot \frac{1}{\sqrt{2 \pi \tau^{2}}} \exp\left( -\frac{(-y - \nu)^{2}}{2\tau^{2}} \right)~\mathrm{d}y\\
+  =& \int_{\varepsilon}^{\infty} \mathcal{N}\left( z \mid -y\mu, y^{2}\sigma^{2} \right) \cdot \frac{1}{\sqrt{2 \pi \tau^{2}}} \exp\left( -\left( \frac{y + \nu}{\sqrt{2\tau^{2}}} \right)^{2} \right)~\mathrm{d}y\\
+  \intertext{Substitute $t = \left( \frac{y + \nu}{\sqrt{2\tau^{2}}} \right)^{2}$, $y = \pm \sqrt{2\tau^{2} t} - \nu$, $\frac{\mathrm{d}t}{\mathrm{d}y} = \frac{y + \nu}{\tau^{2}} = \frac{(\pm \sqrt{2\tau^{2} t} - \nu) + \nu}{\tau^{2}} = \pm \frac{\sqrt{2t}}{\sqrt{\tau^{2}}}$}\\
+  =& \int_{\frac{(\varepsilon + \nu)^{2}}{2\tau^{2}}}^{\infty} \mathcal{N}\left( z \mid -\left( \sqrt{2\tau^{2} t} - \nu \right)\mu, \left( \sqrt{2\tau^{2} t} - \nu \right)^{2}\sigma^{2} \right) \cdot \frac{1}{2 \sqrt{\pi t}} \exp\left( -t \right)~\mathrm{d}t\\
+  \intertext{Substitute $s = t - \frac{(\varepsilon + \nu)^{2}}{2\tau^{2}}$, $t = s + \frac{(\varepsilon + \nu)^{2}}{2\tau^{2}}$, $\frac{\mathrm{d}s}{\mathrm{d}t} = 1$}\\
+  =& \int_{0}^{\infty} \mathcal{N}\left( z \mid -\left( \sqrt{2\tau^{2}s + (\varepsilon + \nu)^{2}} - \nu \right)\mu, \left( \sqrt{2\tau^{2}s + (\varepsilon + \nu)^{2}} - \nu \right)^{2}\sigma^{2} \right) \cdot \frac{\exp\left( -\frac{(\varepsilon + \nu)^{2}}{2\tau^{2}} \right)}{2 \sqrt{\pi \left( s + \frac{(\varepsilon + \nu)^{2}}{2\tau^{2}} \right)}} \exp(-s)~\mathrm{d}s
+\end{align*}
+
+Next we rearrange the second integrand.
+\begin{align*}
+  & \int_{\varepsilon}^{\infty} \mathcal{N}\left( z \mid y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(y \mid \nu, \tau^{2})~\mathrm{d}y\\
+  =& \int_{\varepsilon}^{\infty} \mathcal{N}\left( z \mid y\mu, y^{2}\sigma^{2} \right) \cdot \frac{1}{\sqrt{2 \pi \tau^{2}}} \exp\left( -\frac{(y - \nu)^{2}}{2\tau^{2}} \right)~\mathrm{d}y\\
+  =& \int_{\varepsilon}^{\infty} \mathcal{N}\left( z \mid y\mu, y^{2}\sigma^{2} \right) \cdot \frac{1}{\sqrt{2 \pi \tau^{2}}} \exp\left( -\left( \frac{y - \nu}{\sqrt{2\tau^{2}}} \right)^{2} \right)~\mathrm{d}y\\
+  \intertext{Substitute $t = \left( \frac{y - \nu}{\sqrt{2\tau^{2}}} \right)^{2}$, $y = \pm \sqrt{2\tau^{2} t} + \nu$, $\frac{\mathrm{d}t}{\mathrm{d}y} = \frac{y - \nu}{\tau^{2}} = \frac{(\pm \sqrt{2\tau^{2} t} + \nu) - \nu}{\tau^{2}} = \pm \frac{\sqrt{2t}}{\sqrt{\tau^{2}}}$}\\
+  =& \int_{\frac{(\varepsilon - \nu)^{2}}{2\tau^{2}}}^{\infty} \mathcal{N}\left( z \mid \left( \sqrt{2\tau^{2} t} + \nu \right)\mu, \left( \sqrt{2\tau^{2} t} + \nu \right)^{2}\sigma^{2} \right) \cdot \frac{1}{2\sqrt{\pi t}} \exp\left( -t \right)~\mathrm{d}t\\
+  \intertext{Substitute $s = t - \frac{(\varepsilon - \nu)^{2}}{2\tau^{2}}$, $t = s + \frac{(\varepsilon - \nu)^{2}}{2\tau^{2}}$, $\frac{\mathrm{d}s}{\mathrm{d}t} = 1$}\\
+  =& \int_{0}^{\infty} \mathcal{N}\left( z \mid \left( \sqrt{2\tau^{2} s + (\varepsilon - \nu)^{2}} + \nu \right)\mu, \left( \sqrt{2\tau^{2} s + (\varepsilon - \nu)^{2}} + \nu \right)^{2}\sigma^{2} \right) \cdot \frac{\exp\left( -\frac{(\varepsilon - \nu)^{2}}{2\tau^{2}} \right)}{2\sqrt{\pi \left( s + \frac{(\varepsilon - \nu)^{2}}{2\tau^{2}} \right)}} \exp(-s)~\mathrm{d}s
+\end{align*}
+
+Now we can plug in the two rearrangements and receive approximation as a mixture
+of gaussians by applying the Gauss-Laguerre quadrature.
+\begin{align*}
+  p(Z = z) \approx& \int_{0}^{\infty} \mathcal{N}\left( z \mid -\left( \sqrt{2\tau^{2}s + (\varepsilon + \nu)^{2}} - \nu \right)\mu, \left( \sqrt{2\tau^{2}s + (\varepsilon + \nu)^{2}} - \nu \right)^{2}\sigma^{2} \right)\\
+&\quad \cdot \frac{\exp\left( -\frac{(\varepsilon + \nu)^{2}}{2\tau^{2}} \right)}{2 \sqrt{\pi \left( s + \frac{(\varepsilon + \nu)^{2}}{2\tau^{2}} \right)}} \exp(-s)~\mathrm{d}s\\
+                  & + \int_{0}^{\infty} \mathcal{N}\left( z \mid \left( \sqrt{2\tau^{2} s + (\varepsilon - \nu)^{2}} + \nu \right)\mu, \left( \sqrt{2\tau^{2} s + (\varepsilon - \nu)^{2}} + \nu \right)^{2}\sigma^{2} \right)\\
+                  &\qquad \cdot \frac{\exp\left( -\frac{(\varepsilon - \nu)^{2}}{2\tau^{2}} \right)}{2\sqrt{\pi \left( s + \frac{(\varepsilon - \nu)^{2}}{2\tau^{2}} \right)}} \exp(-s)~\mathrm{d}s\\
+  \approx& \sum_{i = 1}^{n} w_{i} \frac{\exp\left( -\frac{(\varepsilon + \nu)^{2}}{2\tau^{2}} \right)}{2 \sqrt{\pi \left( x_{i} + \frac{(\varepsilon + \nu)^{2}}{2\tau^{2}} \right)}} \cdot \mathcal{N}\left( z \left|
+           \begin{array}{c}
+             -\left( \sqrt{2\tau^{2}x_{i} + (\varepsilon + \nu)^{2}} - \nu \right)\mu,\\
+             \left( \sqrt{2\tau^{2}x_{i} + (\varepsilon + \nu)^{2}} - \nu \right)^{2}\sigma^{2}
+           \end{array} \right.\right)\\
+                  &+ \sum_{i = 1}^{n} w_{i} \frac{\exp\left( -\frac{(\varepsilon - \nu)^{2}}{2\tau^{2}} \right)}{2\sqrt{\pi \left( x_{i} + \frac{(\varepsilon - \nu)^{2}}{2\tau^{2}} \right)}} \cdot \mathcal{N}\left( z \left|
+                    \begin{array}{c}
+                      \left( \sqrt{2\tau^{2} x_{i} + (\varepsilon - \nu)^{2}} + \nu \right)\mu,\\
+                      \left( \sqrt{2\tau^{2} x_{i} + (\varepsilon - \nu)^{2}} + \nu \right)^{2}\sigma^{2}
+                    \end{array} \right.\right)
+\end{align*}
+where the $x_{i}$ are the roots of the $n$-th Laguerre polynomial and the
+$w_{i}$ the associated weights.
 
 \section{Division}
 
