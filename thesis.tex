@@ -17,6 +17,9 @@
 \usepackage[style=alphabetic]{biblatex}
 \usepackage{fancyhdr}
 
+% Define an appendix
+\usepackage[titletoc]{appendix}
+
 % Do not indent paragraphs
 \usepackage{parskip}
 
@@ -25,6 +28,17 @@
 
 % Set global minted options
 \setminted{linenos, autogobble, frame=lines, framesep=2mm}
+
+% Do not show red boxes around characters, that pygments did not recognize,
+% e.g. greek symbols
+\makeatletter
+\expandafter\def\csname PYGdefault@tok@err\endcsname{\def\PYGdefault@bc##1{{\strut ##1}}}
+\makeatother
+
+% Define replacements for UTF-8 characters in source code
+\usepackage{newunicodechar}
+\newunicodechar{μ}{$\mu$}
+\newunicodechar{Σ}{$\Sigma$}
 
 \newtheorem{lemma}{Lemma}
 \newtheorem{corollary}{Corollary}
@@ -541,6 +555,13 @@ Gauss-Hermite quadrature form and get
 
 \chapter{Comparisons}
 \label{ch:comparisons}
+
+\begin{appendices}
+  \chapter{Source Code}
+  \label{ch:source}
+
+  \inputminted{julia}{src/Transforms.jl}
+\end{appendices}
 
 \printbibliography
 
