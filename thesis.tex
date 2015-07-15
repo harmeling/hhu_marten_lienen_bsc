@@ -10,6 +10,9 @@
 \usepackage{amssymb}
 \usepackage{amsthm}
 
+% Useful extensions for math
+\usepackage{mathtools}
+
 \usepackage{graphicx}
 \usepackage[margin=3cm]{geometry}
 \usepackage{microtype}
@@ -199,7 +202,8 @@ with distributions of your choosing and still obtain a symbolic result.
 
 We will
 \begin{itemize}
-\item give a more in-depth description of the problem (Section \ref{ch:problem})
+\item formalize the problem and explain our idea in detail (Section
+  \ref{ch:idea})
 \item prove, that mixture distributions are closed under certain operations and
   are thus a good fit as a mathematical framework (Section \ref{ch:theory})
 \item explore the viability of different component distributions and numerical
@@ -209,18 +213,52 @@ We will
   sampling (Section \ref{ch:comparisons})
 \end{itemize}
 
-\chapter{The Problem}
-\label{ch:problem}
-
-Consider $X \in \mathbb{R}^{n}$ a continuous random vector,
-$f : \supp(X) \rightarrow \mathbb{R}$ a function defined on at least the support
-of $X$ and $Y = f(X)$. The task is then to derive the probability distribution
-of $Y$ from the known distribution of $X$.
-
 \chapter{Our Approach}
+\label{ch:idea}
+
+Consider $X_{i} \in \mathbb{R}, i \in \{ 1, \dots, n \}$ $n$ independent random
+variables with known PDFs $p(X_{i} = x)$,
+$f : \bigtimes_{i} \supp(X_{i}) \rightarrow \mathbb{R}$ a function defined on at
+least the support of all the $X_{i}$ and $Y = f(X_{1}, \dots, X_{n})$ the
+dependent variable. The task is then to derive the probability distribution of
+$Y$ or at least an approximation to it from the known distributions of the
+$X_{i}$.
+
+As explained in the first chapter, this problem is very hard in its full
+generality. Therefore we are going simplify it by restricting the $X_{i}$ as
+well as $f$. First, we restrict the distributions of the $X_{i}$ to mixture
+distributions, especially mixtures of Gaussians. The first argument for mixtures
+of Gaussians is, that with enough components you can approximate any
+distribution to arbitrary precision as you can see in figure
+\ref{fig:idea-em}. So we have simplified one aspect of the problem, while still
+being able to model any distribution. The other argument is, that Gaussian
+distributions are closed under addition and subtraction and the products and
+quotients can be closely approximated by mixtures of Gaussians. This is
+important, because these closure properties of distributions are preserved, when
+you consider a mixture of them, as we see in section \ref{sec:closure}.
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{thesis/idea/em}
+  \caption{A gamma distribution approximated by mixtures of Gaussians}
+  \label{fig:idea-em}
+\end{figure}
+
+Secondly, we only consider $f$, that are differentiable and invertible in the
+first argument. The reasoning is that for such $f$ there is a lemma called
+\emph{multivariate change of variables} \cite[chapter~2.6.2.1]{murphy}, that
+lets you reduce the distribution of $Y$ to the joint distribution of the
+$X_{i}$. This in turn lets us prove, that the family of mixture distributions is
+closed under any such $f$ (section \ref{sec:closure}).
+
+With these restrictions in place we can give symbolic approximations for any $Y$
+as long as Gaussian distributions are closed under $f$ or the result of $f$ can
+at least be reasonably well approximated by a mixture of Gaussians.
+
+\chapter{The Details}
 \label{ch:theory}
 
 \section{Closure of Mixtures}
+\label{sec:closure}
 
 Let $n \in \mathbb{N}_{0}$, $X$ a real random variable with mixture distribution
 and $Y_{i}, i \in \{ 1, \dots, n \}$ another $n$ real random variables with
