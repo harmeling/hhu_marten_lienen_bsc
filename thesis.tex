@@ -17,6 +17,9 @@
 \usepackage[style=alphabetic]{biblatex}
 \usepackage{fancyhdr}
 
+% Define subfigures
+\usepackage{subcaption}
+
 % Define an appendix
 \usepackage[titletoc]{appendix}
 
@@ -109,75 +112,90 @@
 
 \chapter{Introduction}
 
-Let $X_{i}, i \in \{ 1, \dots, n \}$ and $Y$ be random variables and define $Z$ as
+In the age of machine learning statistics and random variables have caught the
+attention of computer scientists and software engineers. They try to estimate
+the variables' parameters and properties from observed data and compute the
+distributions of dependent variables from there. In this thesis we tackle the
+latter problem. Its complexity varies from instance to instance.
+
+As a simple example you might be interested in the sum of two estimated random
+variables, which you assume to be Gaussian distributed. The sum's distribution
+can be worked out formally through basic analysis, which can even be done by
+hand.
 \begin{equation*}
-  Z := \frac{\sum_{i = 1}^{n} X_{i}}{Y}
-\end{equation*}
-How do you write a program to calculate $Z$? If the variables were floats, it
-would be easy. Even with random variables involved, it might stay that way. For
-very simple examples you may just work it out by hand.
-\begin{equation*}
-  X_{i} \sim \mathcal{N}(\mu_{i}, \sigma_{i}^{2}), i \in \{ 1, 2 \}, \quad Y = 2 \quad \Rightarrow \quad Z \sim \mathcal{N}\left( \frac{\mu_{1} + \mu_{2}}{2}, \frac{\sigma_{1}^{2} + \sigma_{2}^{2}}{2^{2}} \right)
+  X \sim \mathcal{N}(\mu, \sigma) \qquad Y \sim \mathcal{N}(\nu, \tau) \qquad \Rightarrow \qquad Z = X + Y \sim \mathcal{N}(\mu + \nu, \sigma + \tau)
 \end{equation*}
 
-If, however, we complicate this example a little more by declaring $Y$ to be
-gaussian distributed as well, the resulting distribution of $Z$ becomes so
-complicated, that you need computer assistance to work it out. The maple program
-in listing \ref{lst:maple-pdf} computes this and produces the unwieldy
-expression in figure \ref{fig:maple-pdf}.
-\begin{listing}
-  \begin{minted}{python}
-    with(Statistics);
-    X := [RandomVariable(Normal(mu, sigma)),
-          RandomVariable(Normal(nu, tau))];
-    Y := RandomVariable(Normal(alpha, beta));
-    Z := (X[1] + X[2]) / Y;
-    display(PDF(Z, z));
-  \end{minted}
-  \caption{A maple program to compute the PDF of $Z$ symbolically}
-  \label{lst:maple-pdf}
-\end{listing}
+Most cases however are not manageable without the assistance of computing
+software like Maple \cite{maple}. The following Maple program computes the
+probability density function (PDF) of the quotient of two random variables as
+defined in the previous paragraph. A quick look at figure
+\ref{fig:intro-maple-pdf} should tell you, that you probably would not stand a
+chance with pen and paper.
+\begin{minted}{python}
+  with(Statistics);
+  X := RandomVariable(Normal(mu, sigma));
+  Y := RandomVariable(Normal(nu, tau));
+  Z := X/Y;
+  PDF(Z, z);
+\end{minted}
 \begin{figure}
-  \centering
-  \includegraphics[width=300px]{thesis/maple-pdf}
-  \caption{PDF, that maple came up with}
-  \label{fig:maple-pdf}
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/introduction/maple-pdf}
+    \caption{Symbolic PDF}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/introduction/maple-plot}
+    \caption{Plot for $\mu = 2, \nu = 0.5, \sigma = \tau = 1$}
+  \end{subfigure}
+  \caption{Maple finds a symbolic representation of the result's distribution}
+  \label{fig:intro-maple-pdf}
 \end{figure}
 
-But in yet more general cases even computers will not be able to find a PDF
-symbolically or the found expression may take exorbitant resources to
-evaluate. If for example we use three different distributions, maple does find
-an expression, but I cannot plot it, because my computer runs out of memory. At
-this point you have to resort to sampling. The church program in listing
-\ref{lst:church-pdf} plots the PDF of $Z$ in figure \ref{fig:church-pdf}.
-\begin{listing}
-  \begin{minted}{scheme}
-    (define (sample)
-      (define x1 (gaussian 1 1))
-      (define x2 (gamma 1 1))
-      (define y (exponential 1))
+The approach of ramping up computing power and letting the computer find a
+symbolic solution also has its limitations though. If you combine enough random
+variables with different operations, a technical computing solution will either
+be unable to find a solution or the found solution will contain so many
+left-over integrals and costly functions, that actually evaluating it is not
+feasible. At this point you have to resort to sampling. This means, that you
+sample $n$ times from your random variables and compute $n$ samples of the
+dependent variable. You can then use sample statistics to estimate basic
+properties of the dependent variable and a histogram of the samples is an
+approximation to its PDF. The probabilistic programming community \cite{ppl} has
+developed various libraries and whole programming languages to explore sampling
+techniques. The next program is written in one of these called Church
+\cite{church}. It samples from three random variables with different
+distributions and computes samples of the dependent variable from them. We
+obtain the approximation in figure \ref{fig:church-pdf}, even when Maple was not
+able to handle this at all and just reported $\infty$.
+\begin{minted}{scheme}
+  (define (sample)
+    (define x1 (gaussian 1 2))
+    (define x2 (gamma 1 3))
+    (define y (exponential 2))
 
-      (/ (+ x1 x2) y))
+    (/ (* x1 x2) y))
 
-    (define samples (repeat 100000 sample))
-  \end{minted}
-  \caption{}
-  \label{lst:church-pdf}
-\end{listing}
-\begin{figure}
+  (define samples (repeat 100000 sample))
+\end{minted}
+\begin{figure}[h]
   \centering
-  \includegraphics[width=300px]{thesis/church-pdf}
+  \includegraphics[width=300px]{thesis/introduction/church-pdf}
   \caption{Approximation to a complicated PDF obtained by sampling}
   \label{fig:church-pdf}
 \end{figure}
 
-On the one hand symbolic solutions are resource consuming and on the other hand
-sampling gives results in a form, that is not very reusable. You are restricted
-to sample statistics and guessing the PDF and other statistics from that. This
-thesis will explore the middleground between these two. First, we will use
-sampling and EM to convert the input distributions into a representation, that
-you can work with with a combination of symbolics and numerics. Then we will
-execute further computations with these easy to handle approximations.
+Symbolics give you a compact representation of exact solutions. The downside is,
+that symbolics are restricted to simple problems and the resulting formulas can
+be very complicated and expensive to evaluate. Sampling can cope with every
+combination, that is computable, but is only approximate. Our approach lies
+between symbolics and sampling, a symbolic approximation. We find a symbolic
+representation that can approximate arbitrary probability distributions and at
+the same time is closed under certain operations. So you can do calculations
+with distributions of your choosing and still obtain a symbolic result.
 
 We will
 \begin{itemize}
@@ -194,9 +212,9 @@ We will
 \chapter{The Problem}
 \label{ch:problem}
 
-Let $X$ be a random variable, $f$ some function defined on $\supp(X)$ and
-$Y = f(X)$. The task is then to derive the probability distribution of $Y$ from
-the known distribution of $X$. If $X$ is categorical, you
+Let $X$ be a continuous random variable, $f$ some function defined on $\supp(X)$
+and $Y = f(X)$. The task is then to derive the probability distribution of $Y$
+from the known distribution of $X$.
 
 We will concentrate on continuous $X$. So $X$ has a probability density function
 $p(X)~:~\mathbb{R}~\rightarrow~[0,~1]$ and we can write down the following
