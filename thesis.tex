@@ -257,6 +257,44 @@ at least be reasonably well approximated by a mixture of Gaussians.
 \chapter{The Details}
 \label{ch:theory}
 
+In this chapter we will work out the details. We begin with explaining how to
+convert arbitrary distributions into mixtures of Gaussians. Then we will prove,
+that mixture distributions are closed under certain functions. In the end we
+will look at Gaussians as component distributions of mixture distributions and
+give exact results and approximations for basic function applications.
+
+\section{Modelling Distributions as Mixtures of Gaussians}
+\label{sec:em}
+
+The first step is based on the expectation-maximization (EM) algorithm
+\cite[chapter~11.4.2]{murphy}, an iterative algorithm to fit a mixture of
+Gaussians to best explain a set of samples. To find a mixture of Gaussians, that
+models a given distribution $p$, you first draw a set of samples from $p$. These
+samples are obviously distributed according to $p$, so when you fit a mixture of
+Gaussians with EM to best explain them, i.e. maximize the likelihood, it will
+closely model $p$.
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/theory/em-laplace}
+    \caption{A Laplace distribution with $a = 1, b = 2$}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/theory/em-chisq}
+    \caption{A chi-squared distribution with $k = 3$}
+  \end{subfigure}
+  \caption{Some distributions modelled as mixtures of Gaussians}
+  \label{fig:theory-em}
+\end{figure}
+
+As shown in figure \ref{fig:theory-em} EM also works for distributions, that do
+not share many properties with Gaussians, but yields the best results for
+distributions that are symmetric and have whole $\mathbb{R}$ as support.
+
 \section{Closure of Mixtures}
 \label{sec:closure}
 
