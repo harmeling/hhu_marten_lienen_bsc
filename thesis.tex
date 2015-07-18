@@ -394,6 +394,7 @@ Equipped with lemma \ref{lemma:joint-pdf} we can now derive the general form of
 $Z$'s distribution.
 
 \begin{lemma}
+  \label{lemma:mixture}
   If $f$ is differentiable and invertible in the first argument, the
   distribution of $Z$ is a mixture distribution given by the following equation
   \begin{equation*}
@@ -414,7 +415,22 @@ $Z$'s distribution.
   \end{align*}
 \end{proof}
 
-\section{Monadic Functions}
+\begin{lemma}
+  \label{lemma:components}
+  If $f(X_{i}, Y_{1,k_{1}}, \dots, Y_{n,k_{n}})$ has a Gaussian mixture
+  distribution, $Z$ has a Gaussian mixture distribution as well.
+\end{lemma}
+\begin{proof}
+  Trivial.
+\end{proof}
+
+Lemma \ref{lemma:mixture} and \ref{lemma:components} together are the foundation
+of this thesis. They say, that if $X$ and the $Y_{i}$ have a mixture of $P$
+(e.g. Gaussians) distribution, $Z$ will have a mixture of $P$ distribution as
+well, if $f$ applied to the component distributions of $X$ and $Y_{i}$ is
+distributed as $P$ or a mixture of $P$. This means, that to prove results in our
+restricted setting, we only need to prove it for $P$-distributed variables and
+it will generalize to mixtures of $P$ automatically.
 
 \section{Diadic Functions}
 
@@ -513,16 +529,6 @@ in specific cases this might be possible, as we see in the next example.
     Z_{i,j} \sim \mathcal{N}(\mu_{i} + \nu_{j}, \sigma_{i}^{2} + \tau_{j}^{2})
   \end{equation*}
 \end{example}
-
-\begin{lemma}
-  If $f(X_{i}, Y_{j})$ has a gaussian mixture distribution with $o_{i,j}$
-  components, $Z$ has a gaussian mixture distribution with
-  $\sum_{i = 1}^{n} \sum_{j = 1}^{m} o_{i,j}$ components.
-\end{lemma}
-
-\begin{proof}
-  Trivial.
-\end{proof}
 
 \section{Multiplication}
 
