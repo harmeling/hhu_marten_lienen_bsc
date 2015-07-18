@@ -59,7 +59,6 @@
 
 \newtheorem{lemma}{Lemma}
 \newtheorem*{corollary}{Corollary}
-\newtheorem{example}{Example}
 
 \DeclareMathOperator{\supp}{supp}
 
@@ -452,6 +451,7 @@ In this section we focus on Gaussian distributions and how to express the
 distributions of basic $f(X_{1}, \dots, X_{n})$ as mixtures of gaussians.
 
 \subsection{Affine Transformations}
+\label{sec:affine-transforms}
 
 Let $X$ be a random variable with a Gaussian distribution, i.e.
 $X \sim \mathcal{N}(\mu, \sigma^{2})$. A basic thing to do with $X$ is to apply
@@ -574,19 +574,29 @@ variable denominator, so lemma \ref{lemma:change} does not hold and the
 distribution of $\frac{a}{X}$ cannot be evaluated with the techniques used in
 this section.
 
-\subsection{Binary Functions}
+\subsection{Affine Transformations of $n$ Variables}
 
-However with a general $f$ we cannot determine the component distributions. But
-in specific cases this might be possible, as we see in the next example.
+A natural enhancement of section \ref{sec:affine-transforms} is to generalize it
+to multiple variables. Therefore we will first determine the distribution of the
+sum of two Gaussian distributed variables.
 
-\begin{example}
-  If $f = +$ or $f = -$, $f$ is monotonic and invertible in the first
-  argument. Also $f$ of two normally distributed random variables is again
-  normally distributed, so $Z$ is another mixture of gaussians with components
+\begin{lemma}
+  \label{lemma:gaussian-sum}
+  Let $X \sim \mathcal{N}(\mu, \sigma^{2}), Y \sim \mathcal{N}(\nu, \tau^{2})$
+  be two independent, Gaussian distributed variables. The distribution of their
+  sum is
   \begin{equation*}
-    Z_{i,j} \sim \mathcal{N}(\mu_{i} + \nu_{j}, \sigma_{i}^{2} + \tau_{j}^{2})
+    X + Y \sim \mathcal{N}(\mu + \nu, \sigma^{2} + \tau^{2})
   \end{equation*}
-\end{example}
+\end{lemma}
+\begin{proof2}
+  For a proof see \cite[Satz~11.9]{krengel}.
+\end{proof2}
+
+With lemma \ref{lemma:gaussian-sum} combined with the previous section, we can
+now calculate the distribution of a linear combination of two Gaussian
+distributed variables. Applying this inductively, we can evaluate affine
+transformations of $n$ variables.
 
 \section{Multiplication}
 
