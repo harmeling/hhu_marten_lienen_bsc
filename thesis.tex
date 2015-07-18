@@ -451,16 +451,17 @@ it will generalize to mixtures of $P$ automatically.
 In this section we focus on Gaussian distributions and how to express the
 distributions of basic $f(X_{1}, \dots, X_{n})$ as mixtures of gaussians.
 
-\subsection{First Degree Polynomials}
+\subsection{Affine Transformations}
 
 Let $X$ be a random variable with a Gaussian distribution, i.e.
-$X \sim \mathcal{N}(\mu, \sigma^{2})$. The most basic thing, you can do with
-$X$, is plugging it into a first degree polynomial. Luckily every operation
-involved is just a transformation of the parameters of the original
-distribution.
+$X \sim \mathcal{N}(\mu, \sigma^{2})$. A basic thing to do with $X$ is to apply
+an affine transformation, because every operation involved is just a
+transformation of the parameters of the original distribution, as we will
+presently see. Along the way we will also reduce subtraction and division to
+addition respectively multiplication, because they enhance the usability of the
+julia library.
 
-The first two lemmata will establish rearrangement rules for Gaussian
-distributions.
+First we need to establish two rearrangement rules for Gaussian distributions.
 \begin{lemma}
   \label{lemma:x-mu-symmetry}
   Let $a \in \mathbb{R}$. Then
@@ -495,7 +496,7 @@ and how it is used here.
 \begin{lemma}[Change of variables]
   \label{lemma:change}
   Let $f : \mathbb{R} \rightarrow \mathbb{R}$ be differentiable, monotonic and
-  hence invertible. Then we can ``unapply'' $f$ through the following formula
+  hence invertible. We can ``unapply'' $f$ through the following formula
   \begin{equation*}
     p(f(X) = y) = \left| \frac{\mathrm{d}f^{-1}}{\mathrm{d}y} \right| \cdot p(X = f^{-1}(y))
   \end{equation*}
@@ -568,9 +569,10 @@ division with a scalar.
   $\frac{X}{a} = X \cdot \frac{1}{a}$
 \end{proof2}
 
-Note, that we did not cover $\frac{a}{X}$. Division is not monotonic, so lemma
-\ref{lemma:change} does not hold and the distribution of $\frac{a}{X}$ cannot be
-evaluated with the techniques used in this section.
+Note, that we did not cover $\frac{a}{X}$. Division is not monotonic for a
+variable denominator, so lemma \ref{lemma:change} does not hold and the
+distribution of $\frac{a}{X}$ cannot be evaluated with the techniques used in
+this section.
 
 \subsection{Binary Functions}
 
