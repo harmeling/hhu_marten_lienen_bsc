@@ -58,7 +58,7 @@
 \newunicodechar{Σ}{$\Sigma$}
 
 \newtheorem{lemma}{Lemma}
-\newtheorem{corollary}{Corollary}
+\newtheorem*{corollary}{Corollary}
 \newtheorem{example}{Example}
 
 \DeclareMathOperator{\supp}{supp}
@@ -215,10 +215,12 @@ We will
 \begin{itemize}
 \item formalize the problem and explain our idea in detail (Section
   \ref{ch:idea})
+\item describe a way to represent any distribution as a mixture of Gaussians
+  (Section \ref{sec:em})
 \item prove, that mixture distributions are closed under certain operations and
-  are thus a good fit as a mathematical framework (Section \ref{ch:theory})
-\item explore the viability of different component distributions and numerical
-  integration algorithms
+  are thus a good fit as a mathematical framework (Section \ref{sec:closure})
+\item explore the viability of Gaussians as component distributions (Section
+  \ref{sec:gaussians})
 \item provide a julia implementation (Section \ref{ch:implementation})
 \item compare our results to ones that were derived symbolically or through
   sampling (Section \ref{ch:comparisons})
@@ -443,91 +445,134 @@ distributed as $P$ or a mixture of $P$. This means, that to prove results in our
 restricted setting, we only need to prove it for $P$-distributed variables and
 it will generalize to mixtures of $P$ automatically.
 
-\section{Diadic Functions}
+\section{Gaussians as Component Distributions}
+\label{sec:gaussians}
 
-\section{Scalars and Random Variables}
+In this section we focus on Gaussian distributions and how to express the
+distributions of basic $f(X_{1}, \dots, X_{n})$ as mixtures of gaussians.
 
-Let $X$ be a random variable with a gaussian mixture distribution.
-\begin{equation*}
-  X \sim \sum_{i = 1}^{n} \alpha_{i} \cdot \mathcal{N}(\mu_{i}, \sigma_{i}^{2})
-\end{equation*}
+\subsection{First Degree Polynomials}
 
+Let $X$ be a random variable with a Gaussian distribution, i.e.
+$X \sim \mathcal{N}(\mu, \sigma^{2})$. The most basic thing, you can do with
+$X$, is plugging it into a first degree polynomial. Luckily every operation
+involved is just a transformation of the parameters of the original
+distribution.
+
+The first two lemmata will establish rearrangement rules for Gaussian
+distributions.
 \begin{lemma}
-  \begin{equation*}
-    -X \sim \sum_{i = 1}^{n} \alpha_{i} \cdot \mathcal{N}(-\mu_{i}, \sigma_{i}^{2})
-  \end{equation*}
+  \label{lemma:x-mu-symmetry}
+  Let $a \in \mathbb{R}$. Then
+  $\mathcal{N}(x + a \mid \mu, \sigma^{2}) = \mathcal{N}(x \mid \mu - a,
+  \sigma^{2})$.
 \end{lemma}
-
-\begin{proof}
-  Trivial.
-\end{proof}
-
-\begin{lemma}
-  Let $f \in \mathbb{R}$.
-  \begin{equation*}
-    f + X = X + f \sim \sum_{i = 1}^{n} \alpha_{i} \cdot \mathcal{N}(\mu_{i} + f, \sigma_{i}^{2})
-  \end{equation*}
-\end{lemma}
-
 \begin{proof2}
   \begin{align*}
-    p(X + f = x) & = p(X = x - f) \cdot \left| \frac{\mathrm{d}(x + f)}{\mathrm{d}x} \right| = p(X = x - f)\\
-                 & = \sum_{i = 1}^{n} \alpha_{i} \cdot \mathcal{N}(x - f \mid \mu_{i}, \sigma_{i}^{2})\\
-                 & = \sum_{i = 1}^{n} \alpha_{i} \cdot \mathcal{N}(x \mid \mu_{i} + f, \sigma_{i}^{2})
+    \mathcal{N}(x + a \mid \mu, \sigma^{2}) = & \frac{1}{\sqrt{2 \pi \sigma^{2}}} \exp\left( - \frac{\left((x + a) - \mu \right)^{2}}{2\sigma^{2}} \right)\\
+    = & \frac{1}{\sqrt{2 \pi \sigma^{2}}} \exp\left( - \frac{\left(x - (\mu - a) \right)^{2}}{2\sigma^{2}} \right) = \mathcal{N}(x \mid \mu - a, \sigma^{2})
+  \end{align*}
+\end{proof2}
+
+\begin{lemma}
+  \label{lemma:gaussian-parameter-scaling}
+  Let $f \in \mathbb{R} \setminus \{ 0 \}$. Then
+  $\mathcal{N}(fx \mid \mu, \sigma^{2}) = \frac{1}{|f|} \cdot \mathcal{N}\left(x \mid
+  \frac{\mu}{f}, \frac{\sigma^{2}}{f^{2}}\right)$.
+\end{lemma}
+\begin{proof2}
+  \begin{align*}
+    \mathcal{N}(fx \mid \mu, \sigma^{2}) = & \frac{1}{\sqrt{2 \pi \sigma^{2}}} \exp\left( -\frac{\left(fx - \mu \right)^{2}}{2\sigma^{2}} \right)\\
+    = & \frac{1}{\sqrt{2 \pi \left( \frac{\sigma f}{f} \right)^{2}}} \exp\left( -\frac{f^{2}\left(x - \frac{\mu}{f} \right)^{2}}{2\sigma^{2}} \right)\\
+    = & \frac{1}{|f|} \frac{1}{\sqrt{2 \pi \frac{\sigma^{2}}{f^{2}}}} \exp\left( -\frac{\left(x - \frac{\mu}{f} \right)^{2}}{2 \frac{\sigma^{2}}{f^{2}}} \right)\\
+    = & \frac{1}{|f|} \cdot \mathcal{N}\left( x \mid \frac{\mu}{f}, \frac{\sigma^{2}}{f^{2}} \right)
+  \end{align*}
+\end{proof2}
+
+Next we restate a special case of lemma \ref{lemma:multivariate-change} taken
+from \cite[chapter~2.6.2]{murphy}, because it will make it easier to see, that
+and how it is used here.
+\begin{lemma}[Change of variables]
+  \label{lemma:change}
+  Let $f : \mathbb{R} \rightarrow \mathbb{R}$ be differentiable, monotonic and
+  hence invertible. Then we can ``unapply'' $f$ through the following formula
+  \begin{equation*}
+    p(f(X) = y) = \left| \frac{\mathrm{d}f^{-1}}{\mathrm{d}y} \right| \cdot p(X = f^{-1}(y))
+  \end{equation*}
+\end{lemma}
+
+With these in place we can now examine addition, subtraction, multiplication and
+division with a scalar.
+
+\vspace{1em}
+
+\begin{lemma}
+  $-X \sim \mathcal{N}(-\mu, \sigma^{2})$
+\end{lemma}
+\begin{proof2}
+  This follows directly from lemma \ref{lemma:gaussian-parameter-scaling} and
+  \ref{lemma:change}.
+  \begin{equation*}
+    p(-X = x) = \mathcal{N}((-1)x \mid \mu, \sigma^{2}) = \frac{1}{|{-1}|} \cdot \mathcal{N}\left( x \mid \frac{\mu}{{-1}}, \frac{\sigma^{2}}{({-1})^{2}} \right) = \mathcal{N}(x \mid {-\mu}, \sigma^{2})
+  \end{equation*}
+\end{proof2}
+
+\begin{lemma}
+  Let $f \in \mathbb{R}$. Then
+  $f + X = X + f \sim \mathcal{N}(\mu + f, \sigma^{2})$.
+\end{lemma}
+\begin{proof2}
+  This follows directly from lemma \ref{lemma:x-mu-symmetry} and
+  \ref{lemma:change}.
+  \begin{align*}
+    p(X + f = x) = p(X = x - f) \cdot \left| \frac{\mathrm{d}(x - f)}{\mathrm{d}x} \right| = \mathcal{N}(x - f \mid \mu, \sigma^{2}) = \mathcal{N}(x \mid \mu + f, \sigma^{2})
   \end{align*}
 \end{proof2}
 
 \begin{corollary}
-  Let $f \in \mathbb{R}$.
-  \begin{equation*}
-    X - f \sim \sum_{i = 1}^{n} \alpha_{i} \cdot \mathcal{N}(\mu_{i} - f, \sigma_{i}^{2})
-  \end{equation*}
+  Let $f \in \mathbb{R}$. Then $X - f \sim \mathcal{N}(\mu - f, \sigma^{2})$.
 \end{corollary}
-
 \begin{proof2}
   $X - f = X + (-f)$
 \end{proof2}
 
 \begin{corollary}
-  Let $f \in \mathbb{R}$.
-  \begin{equation*}
-    f - X \sim \sum_{i = 1}^{n} \alpha_{i} \cdot \mathcal{N}(f - \mu_{i}, \sigma_{i}^{2})
-  \end{equation*}
+  Let $f \in \mathbb{R}$. Then $f - X \sim \mathcal{N}(f - \mu, \sigma^{2})$.
 \end{corollary}
-
 \begin{proof2}
   $f - X = f + (-X)$
 \end{proof2}
 
 \begin{lemma}
-  Let $f \in \mathbb{R} \setminus \{ 0 \}$.
-  \begin{equation*}
-    fX = Xf \sim \sum_{i = 1}^{n} \alpha_{i} \cdot \mathcal{N}(f\mu_{i}, f^{2}\sigma_{i}^{2})
-  \end{equation*}
+  Let $f \in \mathbb{R} \setminus \{ 0 \}$. Then
+  $fX = Xf \sim \mathcal{N}(f\mu, f^{2}\sigma^{2})$.
 \end{lemma}
-
 \begin{proof2}
+  This follows from lemma \ref{lemma:gaussian-parameter-scaling} and
+  \ref{lemma:change}.
   \begin{align*}
     p(fX = x) & = \left| \frac{\mathrm{d}\frac{x}{f}}{\mathrm{d}x} \right| \cdot p\left( X = \frac{x}{f} \right)\\
               & = \left|\frac{1}{f}\right| \cdot p\left( X = \frac{x}{f} \right)\\
-              & = \left|\frac{1}{f}\right| \cdot \sum_{i = 1}^{n} \alpha_{i} \cdot \mathcal{N}\left(\frac{x}{f} \mid \mu_{i}, \sigma_{i}^{2}\right)\\
-              & = \left|\frac{1}{f}\right| \cdot \sum_{i = 1}^{n} \alpha_{i} \cdot |f| \cdot \mathcal{N}\left(x \mid f\mu_{i}, f^{2}\sigma_{i}^{2}\right)\\
-              & = \sum_{i = 1}^{n} \alpha_{i} \cdot \mathcal{N}\left(x \mid f\mu_{i}, f^{2}\sigma_{i}^{2}\right)
+              & = \left|\frac{1}{f}\right| \cdot \mathcal{N}\left(\frac{x}{f} \mid \mu, \sigma^{2}\right)\\
+              & = \left|\frac{1}{f}\right| \cdot |f| \cdot \mathcal{N}\left(x \mid f\mu, f^{2}\sigma^{2}\right)\\
+              & = \mathcal{N}\left(x \mid f\mu, f^{2}\sigma^{2}\right)
   \end{align*}
 \end{proof2}
 
 \begin{corollary}
-  Let $f \in \mathbb{R} \setminus \{ 0 \}$.
-  \begin{equation*}
-    \frac{X}{f} \sim \sum_{i = 1}^{n} \alpha_{i} \cdot \mathcal{N}\left( \frac{\mu_{i}}{f}, \frac{\sigma_{i}^{2}}{f^{2}} \right)
-  \end{equation*}
+  Let $f \in \mathbb{R} \setminus \{ 0 \}$. Then
+  $\frac{X}{f} \sim \mathcal{N}\left( \frac{\mu}{f}, \frac{\sigma^{2}}{f^{2}}
+  \right)$.
 \end{corollary}
-
 \begin{proof2}
   $\frac{X}{f} = X \cdot \frac{1}{f}$
 \end{proof2}
 
-\section{Basic Arithmethic}
+Note, that we did not cover $\frac{f}{X}$. Division is not monotonic, so lemma
+\ref{lemma:change} does not hold and the distribution of $\frac{f}{X}$ cannot be
+evaluated with the techniques used in this section.
+
+\subsection{Binary Functions}
 
 However with a general $f$ we cannot determine the component distributions. But
 in specific cases this might be possible, as we see in the next example.
