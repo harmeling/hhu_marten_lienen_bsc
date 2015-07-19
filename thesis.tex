@@ -241,8 +241,8 @@ We will
   \ref{sec:gaussians})
 \item describe the structure of the julia implementation (Section
   \ref{ch:implementation})
-\item compare our results to ones that were derived symbolically or through
-  sampling (Section \ref{ch:comparisons})
+\item showcase our results and compare them to ones that were derived
+  symbolically or through sampling (Section \ref{ch:comparisons})
 \item conclude this thesis with ideas for further work (Section
   \ref{ch:conclusions})
 \end{itemize}
@@ -925,8 +925,164 @@ as you only use the supported operations.
 The source code is attached in appendix \ref{ch:source} as well as published on
 github \cite{github}.
 
-\chapter{Comparisons}
+\chapter{Demos}
 \label{ch:comparisons}
+
+In this chapter we will present example plots for all operations, that we have
+examined, and combinations of them.
+
+\section{Various Distributions as Mixtures of Gaussians}
+
+In section \ref{sec:em} we described, how to model arbitrary distributions as a
+mixture of Gaussians. It would be interesting to see, how well this method
+performs on various distributions and how many components you need, to get a
+reasonable fit.
+
+We observe, that there are two classes in regards to how well they can be
+approximated by a mixture of Gaussians. The first group contains the symmetric
+distributions with support $\mathbb{R}$. Examples are student's T (figure
+\ref{fig:em-students-t}), Cauchy (figure \ref{fig:em-cauchy}) and Laplace
+distributions (figure \ref{fig:em-laplace}).
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/em/t-2-components}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/em/t-5-components}
+  \end{subfigure}
+  \caption{A student's T distribution is well approximated with a handful of
+    components}
+  \label{fig:em-students-t}
+\end{figure}
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/em/cauchy-2-components}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/em/cauchy-5-components}
+  \end{subfigure}
+  \caption{A Cauchy distribution needs a few more components for a good fit}
+  \label{fig:em-cauchy}
+\end{figure}
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/em/laplace-2-components}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/em/laplace-5-components}
+  \end{subfigure}
+  \caption{Two components are too few to recreate the peak of a Laplace
+    distribution}
+  \label{fig:em-laplace}
+\end{figure}
+All of these are very closely matched by a mixture of Gaussians with just $5$
+components, but for some distributions even $2$ yield reasonable results.
+
+The second class consists of the distributions, that are only defined on parts
+of $\mathbb{R}$. Some of them are defined on $\mathbb{R}_{\ge 0}$, for example
+the Gamma (figure \ref{fig:em-gamma}) or Weibull distributions (figure
+\ref{fig:em-weibull}).
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/em/gamma-5-components}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/em/gamma-100-components}
+  \end{subfigure}
+  \caption{You can have few smooth components or a good fit at the corner}
+  \label{fig:em-gamma}
+\end{figure}
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/em/weibull-5-components}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/em/weibull-10-components}
+  \end{subfigure}
+  \caption{Recreating a $90^{\circ}$ corner is easier}
+  \label{fig:em-weibull}
+\end{figure}
+
+Others are only defined on a finite interval, for instance a triangular (figure
+\ref{fig:em-triangular}) or a uniform distribution (figure
+\ref{fig:em-uniform}).
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/em/triangular-5-components}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/em/triangular-100-components}
+  \end{subfigure}
+  \caption{Double the corners, double the problems}
+  \label{fig:em-triangular}
+\end{figure}
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/em/uniform-5-components}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/em/uniform-10-components}
+  \end{subfigure}
+  \caption{Modelling a uniform distribution works surprisingly well}
+  \label{fig:em-uniform}
+\end{figure}
+
+Yet they all share the property, that they have corners, points where the
+probability density more or less abruptly becomes $0$. Modelling these points is
+hard. There is a trade-off between the number of components and the smoothness
+of the approximation. You may get a reasonable approximation with a handful of
+components, but it will not model the corner very well, because the few
+components will have to be broad and smooth to model the bulk of the probability
+mass. The corners may be very important though. If your random variable is Gamma
+distributed, you really do not want any probability mass in
+$\mathbb{R}_{\le 0}$. And a high number of components will accomplish that. It
+will, however, also make the approximation a lot less smooth, because the corner
+has to be modelled by approaching it with progressively more peaked components.
+
+An interesting observation is, that you need less components to model a
+$90^{\circ}$ corner than if it were of another degree.
+
+\section{Operations on Mixtures of Gaussians}
+
+\subsection{Affine Transformations}
+
+\subsection{Products with Gauss-Hermite}
+
+\subsection{Products with Gauss-Laguerre}
+
+\subsection{Quotients}
+
+\section{Complex Examples}
 
 \chapter{Conclusions and Further Work}
 \label{ch:conclusions}
