@@ -598,13 +598,14 @@ now calculate the distribution of a linear combination of two Gaussian
 distributed variables. Applying this inductively, we can evaluate affine
 transformations of $n$ variables.
 
-\section{Multiplication}
+\subsection{Product and Quotient of Gaussian Random Variables}
 
-Multiplication is indeed monotonic and invertible in the first argument, but
-unfortunately gaussian distributions are not closed under it. Actually the
-product of two gaussians has a two-sided chi-squared distribution. So to stay
-inside the realm of mixtures of gaussians, we have to approximate it with yet
-another mixture of gaussians.
+Multiplication and division are indeed monotonic and invertible in the first
+argument, but differ from the previous operations in that Gaussian distributions
+are not closed under them. Actually the products and quotients of two gaussians
+do not have any standard distributions at all. So to stay inside the realm of
+mixtures of Gaussians, we have to approximate them with a mixture of Gaussians
+using numerical integration algorithms.
 
 Let $X$ and $Y$ be two normally distributed variables
 \begin{equation*}
@@ -618,30 +619,108 @@ and $Z = X \cdot Y$ their product. Then $Z$ is distributed as follows
            & = \int_{-\infty}^{\infty} \mathcal{N}\left( z \mid y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(y \mid \nu, \tau^{2})~\mathrm{d}y
 \end{align*}
 
-\subsection{Gauss-Hermite}
+We would like to write this as a mixture of Gaussians, i.e.
+$\sum_{i} \alpha_{i} \cdot \mathcal{N}(\mu_{i}, \sigma_{i})$. Gaussian
+quadrature comes to mind, a family of numerical integration algorithms, that
+approximate
+\begin{equation*}
+  \int_{a}^{b} f(x) \cdot w(x)~\mathrm{d}x \approx \sum_{i = 1}^{n} w_{i} f(x_{i})
+\end{equation*}
+for various combinations of $a$, $b$ and $w$ as long as the integrand can be
+written as $f(x) \cdot w(x)$, where $w$ is a weight function determined by the
+specific algorithm and $f$ an arbitrary function from $C^{2n - 1}[a, b]$, if you
+want to approximate with $n$ summands. It probably does not need to be
+mentioned, but the approximation becomes more accurate with increasing $n$.
 
-We would like to approximate this with Gauss-Hermite quadrature. Therefore we
-have to transform the integrand into the form $f(x) \cdot \exp(-x^{2})$ with the
-following substitution.
+\subsubsection{Gauss-Hermite Quadrature}
+
+Gauss-Hermite quadrature is a special case of Gauss quadrature for integrals of
+the form
+\begin{equation*}
+  \int_{-\infty}^{\infty} f(x) \cdot \exp(-x^{2})~\mathrm{d}x
+\end{equation*}
+This looks like a perfect fit for our integral, because the PDF of a Gaussian
+distribution is practically of the form $a \cdot \exp(-x^{2})$, so one of the
+Gaussians can serve as the weight function, while the other persists as part of
+$f$ creates the Gaussians in the resulting mixture of Gaussians.
+
+\begin{align*}
+  p(Z = z) & = \int_{-\infty}^{\infty} \mathcal{N}\left( z \mid y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(y \mid \nu, \tau^{2})~\mathrm{d}y\\
+           & = \int_{-\infty}^{\infty} \mathcal{N}\left( z \mid y\mu, y^{2}\sigma^{2} \right) \cdot \frac{1}{\sqrt{2\pi\tau^{2}}} \exp\left( -\frac{(y - \nu)^{2}}{2\tau^{2}} \right)~\mathrm{d}y\\
+  \intertext{To transform the integrand into the form $f(x) \cdot \exp(-x^{2})$ we will now substitute
 \begin{equation*}
   x = \frac{y - \nu}{\sqrt{2}\tau} \Leftrightarrow y = \sqrt{2}\tau x + \nu \qquad \frac{\mathrm{d}x}{\mathrm{d}y} = \frac{1}{\sqrt{2}\tau}
-\end{equation*}
-\begin{align*}
-  p(Z = z) & = \int_{-\infty}^{\infty} \mathcal{N}\left( z \mid y\mu, y^{2}\sigma^{2} \right) \cdot \frac{1}{\sqrt{2\pi\tau^{2}}} \exp\left( -\frac{(y - \nu)^{2}}{2\tau^{2}} \right)~\mathrm{d}y\\
+\end{equation*}}
            & = \frac{1}{\sqrt{\pi}} \int_{-\infty}^{\infty} \mathcal{N}\left( z \mid \left(\sqrt{2}\tau x + \nu\right)\mu, \left(\sqrt{2}\tau x + \nu\right)^{2}\sigma^{2} \right) \cdot \exp\left( -x^{2} \right)~\mathrm{d}x
 \end{align*}
 
-Now that we have achieved the right form, we can apply the approximation.
+With the integrand in the right form we can apply the approximation.
 \begin{equation*}
   p(Z = z) \approx \sum_{i = 1}^{n} \frac{w_{i}}{\sqrt{\pi}} \cdot \mathcal{N}\left( z \mid \left(\sqrt{2 \tau^{2}} x_{i} + \nu\right)\mu, \left(\sqrt{2 \tau^{2}} x_{i} + \nu\right)^{2}\sigma^{2} \right)
 \end{equation*}
 where $x_{i}$ and $w_{i}$ are the positions and weights as defined by the
-Gauss-Hermite quadrature method.
+Gauss-Hermite quadrature method. Interestingly it follows from the construction
+of the method, that $\sum w_{i} = \sqrt{\pi}$, so the approximation is a convex
+combination and thus a real mixture distribution.
 
-So we have approximated the product as a mixture of gaussians. Curiously the
-weights even sum to $1$.
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/theory/gauss-hermite}
+    \caption{An overview of the general fit}
+    \label{fig:gauss-laguerre}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/theory/gauss-hermite-zoomed}
+    \caption{Zoomed in around $0$}
+    \label{fig:gauss-laguerre-zoomed}
+  \end{subfigure}
+  \caption{A product distribution approximated by a mixture of Gaussians}
+\end{figure}
+A plot shows, that it is a reasonable fit. In figure \ref{fig:gauss-laguerre} we
+see, that the calculated mixture of Gaussians closely follows the true PDF
+obtained by sampling except in a neighborhood of $0$. The zoomed-in plot in
+figure \ref{fig:gauss-laguerre-zoomed} confirms indeed, that the approximation
+still has a similar shape, but is more wobbly than the true PDF in the proximity
+of $0$.
 
-\subsection{Gauss-Laguerre}
+The bad fit around $0$ is actually inherent to our problem and choice of
+algorithm. Remember the requirement of any Gauss quadrature method, that $f$ be
+in $C^{2n - 1}[a, b]$, and then look at the original integral and its integrand
+as a function of $y$.
+\begin{equation*}
+  \int_{-\infty}^{\infty} \mathcal{N}\left( z \mid y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(y \mid \nu, \tau^{2})~\mathrm{d}y
+\end{equation*}
+If $z = 0$ and $y$ approaches $0$, the integrand tends towards $\infty$ from
+both sides, so it is not even once continuously differentiable in $0$, though it
+is continuously differentiable infinite times everywhere else. So any Gauss
+quadrature method will be numerically unstable. It is, however, sufficiently
+stable for our cause, if you evaluate it with $z$ not too close $0$, which is
+also evident in figure \ref{fig:gauss-laguerre}.
+
+The problem obviously persists after the substitution, but now we can pinpoint
+exactly, where the instabily will occur. Recall the transformed integral
+\begin{equation*}
+  \int_{-\infty}^{\infty} \mathcal{N}\left( z \mid \left(\sqrt{2}\tau x + \nu\right)\mu, \left(\sqrt{2}\tau x + \nu\right)^{2}\sigma^{2} \right) \cdot \exp\left( -x^{2} \right)~\mathrm{d}x
+\end{equation*}
+We have the same problem as before, when $\sqrt{2}\tau x + \nu$ is small,
+i.e. $x \approx -\frac{\nu}{\sqrt{2}\tau}$, and
+$z \approx \left(\sqrt{2}\tau x + \nu\right)\mu$. In figure
+\ref{fig:gauss-hermite-instabilities} we plot the 10 components with minimal
+variance. Their $x$-value is their mean and their $y$-value their variance. We
+observe, that all of them are in direct proximity of the instability.
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.6\textwidth]{thesis/theory/gauss-hermite-instabilities}
+  \caption{The components with minimal variance are in direct proximity of the
+    instability}
+  \label{fig:gauss-hermite-instabilities}
+\end{figure}
+
+\subsubsection{Gauss-Laguerre Quadrature}
 
 \begin{align*}
   p(Z = z) & = \int_{-\infty}^{\infty} \mathcal{N}\left( z \mid y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(y \mid \nu, \tau^{2})~\mathrm{d}y\\
