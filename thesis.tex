@@ -757,11 +757,11 @@ from $-\infty$ to $\infty$ as two integrals from $0$ to $\infty$.
 \end{align*}
 
 Both of these integrals can be solved approximately through Gauss-Laguerre
-integration. Yet again we will first have to rewrite them in the required form
-and once again the integrands are not sufficiently differentiable in $0$. This
-time we may be able to avert the problem though through a very non-mathematical
+integration. Yet we will first have to rewrite them in the required form and
+once again the integrands are not sufficiently differentiable in $0$. This time
+we may be able to avert the problem though through a very non-mathematical
 approach. Instead of integrating over $[0, \infty]$ we integrate over
-$[\varepsilon, \infty]$ for some $\varepsilon > 0$. For some $\varepsilon$ the
+$[\varepsilon, \infty]$ for an $\varepsilon > 0$. For some $\varepsilon$ the
 payoff from not evaluating the integrand in the proximity of the instability may
 be greater than the reduced accuracy from ignoring an $\varepsilon$-strip of the
 integral.
@@ -789,7 +789,7 @@ Next we rearrange the second integrand.
 \end{align*}
 
 Now we can plug in the two rearrangements and get the approximation as a mixture
-of gaussians by applying the Gauss-Laguerre quadrature.
+of Gaussians by applying the Gauss-Laguerre quadrature.
 \begin{align*}
   p(Z = z) \approx& \int_{0}^{\infty} \mathcal{N}\left( z \left| \ontopof{-\left( \sqrt{2\tau^{2}s + (\varepsilon + \nu)^{2}} - \nu \right)\mu}{\left( \sqrt{2\tau^{2}s + (\varepsilon + \nu)^{2}} - \nu \right)^{2}\sigma^{2}} \right.\right) \cdot \frac{\exp\left( -\frac{(\varepsilon + \nu)^{2}}{2\tau^{2}} \right)}{2 \sqrt{\pi \left( s + \frac{(\varepsilon + \nu)^{2}}{2\tau^{2}} \right)}} \exp(-s)~\mathrm{d}s\\
                   & + \int_{0}^{\infty} \mathcal{N}\left( z \left| \ontopof{\left( \sqrt{2\tau^{2} s + (\varepsilon - \nu)^{2}} + \nu \right)\mu}{\left( \sqrt{2\tau^{2} s + (\varepsilon - \nu)^{2}} + \nu \right)^{2}\sigma^{2}} \right.\right) \cdot \frac{\exp\left( -\frac{(\varepsilon - \nu)^{2}}{2\tau^{2}} \right)}{2\sqrt{\pi \left( s + \frac{(\varepsilon - \nu)^{2}}{2\tau^{2}} \right)}} \exp(-s)~\mathrm{d}s\\
@@ -802,6 +802,25 @@ of gaussians by applying the Gauss-Laguerre quadrature.
 \end{align*}
 where the $x_{i}$ are the roots of the $n$-th Laguerre polynomial and the
 $w_{i}$ the associated weights.
+
+This time things did not turn out as nice as with Gauss-Hermite quadrature. The
+$\sum_{i} w_{i}$ is $1$ and the value of the coefficients is overall not
+constant, so the sums are not a real mixture distribution and the weights have
+to be normalized. This method also cannot keep up in a direct comparison (figure
+\ref{fig:hermite-laguerre}). Both methods find the correct mean and
+Gauss-Laguerre quadrature also produces a shape similar to the true probability
+density, but apart from that it is pretty far off. The variance in the proximity
+of the instability is too small, but overall it is too high. In this example the
+sample variance is roughly $40$, closely matched by the Gauss-Hermite
+approximation, but the variance of the Gauss-Laguerre mixture is $80$. There may
+be a bug in our program or an error in the math of this section regarding the
+variance, though we did not find any.
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.65\textwidth]{thesis/theory/hermite-laguerre}
+  \caption{Gauss-Laguerre cannot keep up with Gauss-Hermite}
+  \label{fig:hermite-laguerre}
+\end{figure}
 
 \section{Division}
 
