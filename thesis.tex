@@ -68,6 +68,9 @@
   \end{array}
 }
 
+% Inline Julia
+\newcommand{\injulia}[1]{\mintinline{julia}{#1}}
+
 \addbibresource{references.bib}
 
 \begin{document}
@@ -226,7 +229,8 @@ We will
   are thus a good fit as a mathematical framework (Section \ref{sec:closure})
 \item explore the viability of Gaussians as component distributions (Section
   \ref{sec:gaussians})
-\item provide a julia implementation (Section \ref{ch:implementation})
+\item describe the structure of the julia implementation (Section
+  \ref{ch:implementation})
 \item compare our results to ones that were derived symbolically or through
   sampling (Section \ref{ch:comparisons})
 \end{itemize}
@@ -881,6 +885,33 @@ integrand is in $C^{\infty}$.
 
 \chapter{Implementation}
 \label{ch:implementation}
+
+The accompanying implementation is written in julia \cite{julia}, a new
+programming language for technical computing. It was originally developed by a
+group of four applied mathematicians at MIT and has since amassed a significant
+following in the applied mathematics and data science communities.
+
+The foundation of the implementation is a library called Distributions.jl
+\cite{distributionsjl}, that defines types for all well-known distributions and
+some exotic ones. A minor role plays StatsBase.jl \cite{statsbasejl} in our
+implementation of EM, where it approximates the mean and variance of a
+distribution from samples. Finally we depend on GaussQuadrature.jl \cite{gq} as
+well as FastGaussQuadrature.jl \cite{fastgq} for computing the weights and
+integration points for Gauss-Laguerre respectively Gauss-Hermite quadrature.
+
+The central structure in the implementation is a type called
+\injulia{RandomVariable}, that attaches parameters for the different integration
+algorithms to a mixture distributions from Distributions.jl. The parameters
+themselves are wrapped in a type per algorithm. The rest of the library is
+pretty much just chapter \ref{ch:theory} translated from math to julia.
+
+Notable is julia's multiple dispatch system, which allows us to integrate the
+\injulia{RandomVariable} type seamlessly into julia's number system, so that you
+can pass a \injulia{RandomVariable} everywhere you could pass a number as long
+as you only use the supported operations.
+
+The source code is attached in appendix \ref{ch:source} as well as published on
+github \cite{github}.
 
 \chapter{Comparisons}
 \label{ch:comparisons}
