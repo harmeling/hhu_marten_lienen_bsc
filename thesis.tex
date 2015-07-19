@@ -241,7 +241,7 @@ We will
 \label{ch:idea}
 
 Consider $X_{i} \in \mathbb{R}, i \in \{ 1, \dots, n \}$ $n$ independent random
-variables with known PDFs $p(X_{i} = x)$,
+variables with known PDFs $p(X_{i}~=~x)$,
 $f : \bigtimes_{i} \supp(X_{i}) \rightarrow \mathbb{R}$ a function defined on at
 least the support of all the $X_{i}$ and $Y = f(X_{1}, \dots, X_{n})$ the
 dependent variable. The task is then to derive the probability distribution of
@@ -903,7 +903,7 @@ integration points for Gauss-Laguerre respectively Gauss-Hermite quadrature.
 
 The central structure in the implementation is a type called
 \injulia{RandomVariable}, that attaches parameters for the different integration
-algorithms to a mixture distributions from Distributions.jl. The parameters
+algorithms to a mixture distribution from Distributions.jl. The parameters
 themselves are wrapped in a type per algorithm. The rest of the library is
 pretty much just chapter \ref{ch:theory} translated from math to julia.
 
