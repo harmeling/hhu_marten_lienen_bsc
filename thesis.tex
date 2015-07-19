@@ -423,13 +423,21 @@ $Z$'s distribution.
   Let $x = f_{y_{1}, \dots, y_{n}}^{-1}(z)$.
   \begin{align*}
     & p(Z = z)\\
+    \intertext{Expand marginal distribution as an integral over the joint distribution}
     = & \int_{S_{n}} \dots \int_{S_{1}} p(Z = z, Y_{1, \dots, n} = y_{1, \dots, n})~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
+    \intertext{Rewrite it using lemma \ref{lemma:joint-pdf}}
     = & \int_{S_{n}} \dots \int_{S_{1}} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot p\left(X = f_{y_{1}, \dots, y_{n}}^{-1}(z), Y_{1, \dots, n} = y_{1, \dots, n}\right)~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
+    \intertext{Use the fact, that $X$ and $Y_{i}$ are independent, i.e. that the joint PDF can be factorized}
     = & \int_{S_{n}} \dots \int_{S_{1}} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot p\left(X = f_{y_{1}, \dots, y_{n}}^{-1}(z)\right) \prod_{j = 1}^{n} p\left(Y_{j} = y_{j}\right)~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
+    \intertext{Plug in the definitions}
     = & \int_{S_{n}} \dots \int_{S_{1}} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot \left(\sum_{i = 1}^{m} \alpha_{i} \cdot p(X_{i} = x)\right) \prod_{j = 1}^{n} \left(\sum_{k = 1}^{m_{j}} \beta_{j,k} \cdot p(Y_{j,k} = y_{j})\right)~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
+    \intertext{Pull out the coefficients}
     = & \sum_{i = 1}^{m} \sum_{k_{1} = 1}^{m_{1}} \dots \sum_{k_{n} = 1}^{m_{n}} \alpha_{i} \left( \prod_{j = 1}^{n} \beta_{j,k_{j}} \right) \int\limits_{S_{n}} \dots \int\limits_{S_{1}} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot p(X_{i} = x) \cdot \prod_{j = 1}^{n} p(Y_{j,k_{j}} = y_{j})~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
+    \intertext{Join the probability densities together}
     = & \sum_{i = 1}^{m} \sum_{k_{1} = 1}^{m_{1}} \dots \sum_{k_{n} = 1}^{m_{n}} \alpha_{i} \left( \prod_{j = 1}^{n} \beta_{j,k_{j}} \right) \int\limits_{S_{n}} \dots \int\limits_{S_{1}} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot p\left( \ontopof{X_{i} = x}{Y_{1,k_{1}} = y_{1}, \dots, Y_{n,k_{n}} = y_{n}} \right)~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
+    \intertext{Reverse application of lemma \ref{lemma:joint-pdf}}
     = & \sum_{i = 1}^{m} \sum_{k_{1} = 1}^{m_{1}} \dots \sum_{k_{n} = 1}^{m_{n}} \alpha_{i} \left( \prod_{j = 1}^{n} \beta_{j,k_{j}} \right) \int\limits_{S_{n}} \dots \int\limits_{S_{1}} p\left( \ontopof{f(X_{i}, Y_{1,k_{1}}, \dots, Y_{n,k_{n}}) = z}{Y_{1,k_{1}} = y_{1}, \dots, Y_{n,k_{n}} = y_{n}} \right)~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
+    \intertext{Marginalize the $Y_{i}$}
     = & \sum_{i = 1}^{m} \sum_{k_{1} = 1}^{m_{1}} \dots \sum_{k_{n} = 1}^{m_{n}} \alpha_{i} \left( \prod_{j = 1}^{n} \beta_{j,k_{j}} \right) p(f(X_{i}, Y_{1,k_{1}}, \dots, Y_{n,k_{n}}) = z)
   \end{align*}
 \end{proof2}
