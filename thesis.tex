@@ -233,6 +233,8 @@ We will
   \ref{ch:implementation})
 \item compare our results to ones that were derived symbolically or through
   sampling (Section \ref{ch:comparisons})
+\item conclude this thesis with ideas for further work (Section
+  \ref{ch:conclusions})
 \end{itemize}
 
 \chapter{Our Approach}
@@ -915,6 +917,45 @@ github \cite{github}.
 
 \chapter{Comparisons}
 \label{ch:comparisons}
+
+\chapter{Conclusions and Further Work}
+\label{ch:conclusions}
+
+We have shown, that the way of symbolic approximation works and yields results
+comparable to ones derived through sampling or pure symbolics. It has to be said
+though, that the scope of this project is currently limited. To really keep up
+with the competing techniques, mixture approximation needs improvements in
+several areas ranging from easy to hard.
+
+The first and obvious improvement would be to implement more operations. At the
+moment we are limited to basic arithmetic, but there surely are more functions,
+that are differentiable and monotonic in the first argument. A related idea is
+the implementation of a fallback algorithm for unimplemented operations. A naive
+approach is to fall back on sampling and sample from the inputs, apply the
+operation and then fit a new mixture to the samples with EM. But maybe there is
+another way, that uses the fact, that everything is mixture distributed, more
+directly and avoids the involvment of sampling.
+
+An orthogonal idea is the use of other component distributions, which we already
+hinted at throughout section \ref{sec:closure}. The problem with Gaussian
+components is, that the math only allows to apply functions, that are defined on
+at least the complete support of the inputs. This forbids things like taking the
+logarithm of a mixture of Gaussians, because they will always have non-zero
+probability of being negative no matter the means and variances. Gamma and
+inverse Gaussian distributions are promising candidates, that only allow
+positive reals, but at the same time have two parameters to influence mean and
+variance and may thus give similar flexibility as a mixture of Gaussians.
+
+Presumably rather easy would be the generalization to
+$f : \mathbb{R}^{n} \rightarrow \mathbb{R}^{m}$, i.e. allow $f$ to have multiple
+outputs.
+
+The hardest part with the biggest payoff at the same time would be extending our
+techniques to dependent variables. You would have to redo almost everything in
+much more complex, because lemma \ref{lemma:mixture} does not hold for dependent
+variables. The upside is, that you will be able to evaluate $X^{2}$ and terms,
+that include the same variable multiple times, as well as work with variables
+that are in more ways dependent than just being the same variable.
 
 \begin{appendices}
   \chapter{Source Code}
