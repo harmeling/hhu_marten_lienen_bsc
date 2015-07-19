@@ -62,6 +62,12 @@
 
 \DeclareMathOperator{\supp}{supp}
 
+\newcommand{\ontopof}[2]{
+  \begin{array}{c}
+    #1,\\#2
+  \end{array}
+}
+
 \addbibresource{references.bib}
 
 \begin{document}
@@ -416,14 +422,15 @@ $Z$'s distribution.
 \begin{proof2}
   Let $x = f_{y_{1}, \dots, y_{n}}^{-1}(z)$.
   \begin{align*}
-    p(Z = z) & = \int_{S_{n}} \dots \int_{S_{1}} p(Z = z, Y_{1, \dots, n} = y_{1, \dots, n})~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
-             & = \int_{S_{n}} \dots \int_{S_{1}} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot p\left(X = f_{y_{1}, \dots, y_{n}}^{-1}(z), Y_{1, \dots, n} = y_{1, \dots, n}\right)~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
-             & = \int_{S_{n}} \dots \int_{S_{1}} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot p\left(X = f_{y_{1}, \dots, y_{n}}^{-1}(z)\right) \prod_{j = 1}^{n} p\left(Y_{j} = y_{j}\right)~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
-             & = \int_{S_{n}} \dots \int_{S_{1}} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot \left(\sum_{i = 1}^{m} \alpha_{i} \cdot p(X_{i} = x)\right) \prod_{j = 1}^{n} \left(\sum_{k = 1}^{m_{j}} \beta_{j,k} \cdot p(Y_{j,k} = y_{j})\right)~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
-             & = \sum_{i = 1}^{m} \sum_{k_{1} = 1}^{m_{1}} \dots \sum_{k_{n} = 1}^{m_{n}} \alpha_{i} \left( \prod_{j = 1}^{n} \beta_{j,k_{j}} \right) \int_{S_{n}} \dots \int_{S_{1}} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot p(X_{i} = x) \cdot \prod_{j = 1}^{n} p(Y_{j,k_{j}} = y_{j})~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
-             & = \sum_{i = 1}^{m} \sum_{k_{1} = 1}^{m_{1}} \dots \sum_{k_{n} = 1}^{m_{n}} \alpha_{i} \left( \prod_{j = 1}^{n} \beta_{j,k_{j}} \right) \int_{S_{n}} \dots \int_{S_{1}} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot p(X_{i} = x, Y_{1,k_{1}} = y_{1}, \dots, Y_{n,k_{n}} = y_{n})~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
-             & = \sum_{i = 1}^{m} \sum_{k_{1} = 1}^{m_{1}} \dots \sum_{k_{n} = 1}^{m_{n}} \alpha_{i} \left( \prod_{j = 1}^{n} \beta_{j,k_{j}} \right) \int_{S_{n}} \dots \int_{S_{1}} p(f(X_{i}, Y_{1,k_{1}}, \dots, Y_{n,k_{n}}) = z, Y_{1,k_{1}} = y_{1}, \dots, Y_{n,k_{n}} = y_{n})~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
-             & = \sum_{i = 1}^{m} \sum_{k_{1} = 1}^{m_{1}} \dots \sum_{k_{n} = 1}^{m_{n}} \alpha_{i} \left( \prod_{j = 1}^{n} \beta_{j,k_{j}} \right) p(f(X_{i}, Y_{1,k_{1}}, \dots, Y_{n,k_{n}}) = z)
+    & p(Z = z)\\
+    = & \int_{S_{n}} \dots \int_{S_{1}} p(Z = z, Y_{1, \dots, n} = y_{1, \dots, n})~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
+    = & \int_{S_{n}} \dots \int_{S_{1}} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot p\left(X = f_{y_{1}, \dots, y_{n}}^{-1}(z), Y_{1, \dots, n} = y_{1, \dots, n}\right)~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
+    = & \int_{S_{n}} \dots \int_{S_{1}} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot p\left(X = f_{y_{1}, \dots, y_{n}}^{-1}(z)\right) \prod_{j = 1}^{n} p\left(Y_{j} = y_{j}\right)~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
+    = & \int_{S_{n}} \dots \int_{S_{1}} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot \left(\sum_{i = 1}^{m} \alpha_{i} \cdot p(X_{i} = x)\right) \prod_{j = 1}^{n} \left(\sum_{k = 1}^{m_{j}} \beta_{j,k} \cdot p(Y_{j,k} = y_{j})\right)~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
+    = & \sum_{i = 1}^{m} \sum_{k_{1} = 1}^{m_{1}} \dots \sum_{k_{n} = 1}^{m_{n}} \alpha_{i} \left( \prod_{j = 1}^{n} \beta_{j,k_{j}} \right) \int\limits_{S_{n}} \dots \int\limits_{S_{1}} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot p(X_{i} = x) \cdot \prod_{j = 1}^{n} p(Y_{j,k_{j}} = y_{j})~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
+    = & \sum_{i = 1}^{m} \sum_{k_{1} = 1}^{m_{1}} \dots \sum_{k_{n} = 1}^{m_{n}} \alpha_{i} \left( \prod_{j = 1}^{n} \beta_{j,k_{j}} \right) \int\limits_{S_{n}} \dots \int\limits_{S_{1}} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot p\left( \ontopof{X_{i} = x}{Y_{1,k_{1}} = y_{1}, \dots, Y_{n,k_{n}} = y_{n}} \right)~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
+    = & \sum_{i = 1}^{m} \sum_{k_{1} = 1}^{m_{1}} \dots \sum_{k_{n} = 1}^{m_{n}} \alpha_{i} \left( \prod_{j = 1}^{n} \beta_{j,k_{j}} \right) \int\limits_{S_{n}} \dots \int\limits_{S_{1}} p\left( \ontopof{f(X_{i}, Y_{1,k_{1}}, \dots, Y_{n,k_{n}}) = z}{Y_{1,k_{1}} = y_{1}, \dots, Y_{n,k_{n}} = y_{n}} \right)~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
+    = & \sum_{i = 1}^{m} \sum_{k_{1} = 1}^{m_{1}} \dots \sum_{k_{n} = 1}^{m_{n}} \alpha_{i} \left( \prod_{j = 1}^{n} \beta_{j,k_{j}} \right) p(f(X_{i}, Y_{1,k_{1}}, \dots, Y_{n,k_{n}}) = z)
   \end{align*}
 \end{proof2}
 
@@ -756,10 +763,10 @@ We begin with rearranging the first integrand to the form $f(y) * e^{-y}$.
   & \int_{\varepsilon}^{\infty} \mathcal{N}\left( z \mid -y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(-y \mid \nu, \tau^{2})~\mathrm{d}y \\
   =& \int_{\varepsilon}^{\infty} \mathcal{N}\left( z \mid -y\mu, y^{2}\sigma^{2} \right) \cdot \frac{1}{\sqrt{2 \pi \tau^{2}}} \exp\left( -\frac{(-y - \nu)^{2}}{2\tau^{2}} \right)~\mathrm{d}y\\
   =& \int_{\varepsilon}^{\infty} \mathcal{N}\left( z \mid -y\mu, y^{2}\sigma^{2} \right) \cdot \frac{1}{\sqrt{2 \pi \tau^{2}}} \exp\left( -\left( \frac{y + \nu}{\sqrt{2\tau^{2}}} \right)^{2} \right)~\mathrm{d}y\\
-  \intertext{Substitute $t = \left( \frac{y + \nu}{\sqrt{2\tau^{2}}} \right)^{2}$, $y = \pm \sqrt{2\tau^{2} t} - \nu$, $\frac{\mathrm{d}t}{\mathrm{d}y} = \frac{y + \nu}{\tau^{2}} = \frac{(\pm \sqrt{2\tau^{2} t} - \nu) + \nu}{\tau^{2}} = \pm \frac{\sqrt{2t}}{\sqrt{\tau^{2}}}$}\\
+  \intertext{Substitute $t = \left( \frac{y + \nu}{\sqrt{2\tau^{2}}} \right)^{2}$, $y = \pm \sqrt{2\tau^{2} t} - \nu$, $\frac{\mathrm{d}t}{\mathrm{d}y} = \frac{y + \nu}{\tau^{2}} = \frac{(\pm \sqrt{2\tau^{2} t} - \nu) + \nu}{\tau^{2}} = \pm \frac{\sqrt{2t}}{\sqrt{\tau^{2}}}$}
   =& \int_{\frac{(\varepsilon + \nu)^{2}}{2\tau^{2}}}^{\infty} \mathcal{N}\left( z \mid -\left( \sqrt{2\tau^{2} t} - \nu \right)\mu, \left( \sqrt{2\tau^{2} t} - \nu \right)^{2}\sigma^{2} \right) \cdot \frac{1}{2 \sqrt{\pi t}} \exp\left( -t \right)~\mathrm{d}t\\
-  \intertext{Substitute $s = t - \frac{(\varepsilon + \nu)^{2}}{2\tau^{2}}$, $t = s + \frac{(\varepsilon + \nu)^{2}}{2\tau^{2}}$, $\frac{\mathrm{d}s}{\mathrm{d}t} = 1$}\\
-  =& \int_{0}^{\infty} \mathcal{N}\left( z \mid -\left( \sqrt{2\tau^{2}s + (\varepsilon + \nu)^{2}} - \nu \right)\mu, \left( \sqrt{2\tau^{2}s + (\varepsilon + \nu)^{2}} - \nu \right)^{2}\sigma^{2} \right) \cdot \frac{\exp\left( -\frac{(\varepsilon + \nu)^{2}}{2\tau^{2}} \right)}{2 \sqrt{\pi \left( s + \frac{(\varepsilon + \nu)^{2}}{2\tau^{2}} \right)}} \exp(-s)~\mathrm{d}s
+  \intertext{Substitute $s = t - \frac{(\varepsilon + \nu)^{2}}{2\tau^{2}}$, $t = s + \frac{(\varepsilon + \nu)^{2}}{2\tau^{2}}$, $\frac{\mathrm{d}s}{\mathrm{d}t} = 1$}
+  =& \int_{0}^{\infty} \mathcal{N}\left( z \left| \ontopof{-\left( \sqrt{2\tau^{2}s + (\varepsilon + \nu)^{2}} - \nu \right)\mu}{\left( \sqrt{2\tau^{2}s + (\varepsilon + \nu)^{2}} - \nu \right)^{2}\sigma^{2}} \right.\right) \cdot \frac{\exp\left( -\frac{(\varepsilon + \nu)^{2}}{2\tau^{2}} \right)}{2 \sqrt{\pi \left( s + \frac{(\varepsilon + \nu)^{2}}{2\tau^{2}} \right)}} \exp(-s)~\mathrm{d}s
 \end{align*}
 
 Next we rearrange the second integrand.
@@ -767,29 +774,23 @@ Next we rearrange the second integrand.
   & \int_{\varepsilon}^{\infty} \mathcal{N}\left( z \mid y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(y \mid \nu, \tau^{2})~\mathrm{d}y\\
   =& \int_{\varepsilon}^{\infty} \mathcal{N}\left( z \mid y\mu, y^{2}\sigma^{2} \right) \cdot \frac{1}{\sqrt{2 \pi \tau^{2}}} \exp\left( -\frac{(y - \nu)^{2}}{2\tau^{2}} \right)~\mathrm{d}y\\
   =& \int_{\varepsilon}^{\infty} \mathcal{N}\left( z \mid y\mu, y^{2}\sigma^{2} \right) \cdot \frac{1}{\sqrt{2 \pi \tau^{2}}} \exp\left( -\left( \frac{y - \nu}{\sqrt{2\tau^{2}}} \right)^{2} \right)~\mathrm{d}y\\
-  \intertext{Substitute $t = \left( \frac{y - \nu}{\sqrt{2\tau^{2}}} \right)^{2}$, $y = \pm \sqrt{2\tau^{2} t} + \nu$, $\frac{\mathrm{d}t}{\mathrm{d}y} = \frac{y - \nu}{\tau^{2}} = \frac{(\pm \sqrt{2\tau^{2} t} + \nu) - \nu}{\tau^{2}} = \pm \frac{\sqrt{2t}}{\sqrt{\tau^{2}}}$}\\
+  \intertext{Substitute $t = \left( \frac{y - \nu}{\sqrt{2\tau^{2}}} \right)^{2}$, $y = \pm \sqrt{2\tau^{2} t} + \nu$, $\frac{\mathrm{d}t}{\mathrm{d}y} = \frac{y - \nu}{\tau^{2}} = \frac{(\pm \sqrt{2\tau^{2} t} + \nu) - \nu}{\tau^{2}} = \pm \frac{\sqrt{2t}}{\sqrt{\tau^{2}}}$}
   =& \int_{\frac{(\varepsilon - \nu)^{2}}{2\tau^{2}}}^{\infty} \mathcal{N}\left( z \mid \left( \sqrt{2\tau^{2} t} + \nu \right)\mu, \left( \sqrt{2\tau^{2} t} + \nu \right)^{2}\sigma^{2} \right) \cdot \frac{1}{2\sqrt{\pi t}} \exp\left( -t \right)~\mathrm{d}t\\
-  \intertext{Substitute $s = t - \frac{(\varepsilon - \nu)^{2}}{2\tau^{2}}$, $t = s + \frac{(\varepsilon - \nu)^{2}}{2\tau^{2}}$, $\frac{\mathrm{d}s}{\mathrm{d}t} = 1$}\\
-  =& \int_{0}^{\infty} \mathcal{N}\left( z \mid \left( \sqrt{2\tau^{2} s + (\varepsilon - \nu)^{2}} + \nu \right)\mu, \left( \sqrt{2\tau^{2} s + (\varepsilon - \nu)^{2}} + \nu \right)^{2}\sigma^{2} \right) \cdot \frac{\exp\left( -\frac{(\varepsilon - \nu)^{2}}{2\tau^{2}} \right)}{2\sqrt{\pi \left( s + \frac{(\varepsilon - \nu)^{2}}{2\tau^{2}} \right)}} \exp(-s)~\mathrm{d}s
+  \intertext{Substitute $s = t - \frac{(\varepsilon - \nu)^{2}}{2\tau^{2}}$, $t = s + \frac{(\varepsilon - \nu)^{2}}{2\tau^{2}}$, $\frac{\mathrm{d}s}{\mathrm{d}t} = 1$}
+  =& \int_{0}^{\infty} \mathcal{N}\left( z \left| \ontopof{\left( \sqrt{2\tau^{2} s + (\varepsilon - \nu)^{2}} + \nu \right)\mu}{\left( \sqrt{2\tau^{2} s + (\varepsilon - \nu)^{2}} + \nu \right)^{2}\sigma^{2}} \right.\right) \cdot \frac{\exp\left( -\frac{(\varepsilon - \nu)^{2}}{2\tau^{2}} \right)}{2\sqrt{\pi \left( s + \frac{(\varepsilon - \nu)^{2}}{2\tau^{2}} \right)}} \exp(-s)~\mathrm{d}s
 \end{align*}
 
 Now we can plug in the two rearrangements and get the approximation as a mixture
 of gaussians by applying the Gauss-Laguerre quadrature.
 \begin{align*}
-  p(Z = z) \approx& \int_{0}^{\infty} \mathcal{N}\left( z \mid -\left( \sqrt{2\tau^{2}s + (\varepsilon + \nu)^{2}} - \nu \right)\mu, \left( \sqrt{2\tau^{2}s + (\varepsilon + \nu)^{2}} - \nu \right)^{2}\sigma^{2} \right)\\
-&\quad \cdot \frac{\exp\left( -\frac{(\varepsilon + \nu)^{2}}{2\tau^{2}} \right)}{2 \sqrt{\pi \left( s + \frac{(\varepsilon + \nu)^{2}}{2\tau^{2}} \right)}} \exp(-s)~\mathrm{d}s\\
-                  & + \int_{0}^{\infty} \mathcal{N}\left( z \mid \left( \sqrt{2\tau^{2} s + (\varepsilon - \nu)^{2}} + \nu \right)\mu, \left( \sqrt{2\tau^{2} s + (\varepsilon - \nu)^{2}} + \nu \right)^{2}\sigma^{2} \right)\\
-                  &\qquad \cdot \frac{\exp\left( -\frac{(\varepsilon - \nu)^{2}}{2\tau^{2}} \right)}{2\sqrt{\pi \left( s + \frac{(\varepsilon - \nu)^{2}}{2\tau^{2}} \right)}} \exp(-s)~\mathrm{d}s\\
+  p(Z = z) \approx& \int_{0}^{\infty} \mathcal{N}\left( z \left| \ontopof{-\left( \sqrt{2\tau^{2}s + (\varepsilon + \nu)^{2}} - \nu \right)\mu}{\left( \sqrt{2\tau^{2}s + (\varepsilon + \nu)^{2}} - \nu \right)^{2}\sigma^{2}} \right.\right) \cdot \frac{\exp\left( -\frac{(\varepsilon + \nu)^{2}}{2\tau^{2}} \right)}{2 \sqrt{\pi \left( s + \frac{(\varepsilon + \nu)^{2}}{2\tau^{2}} \right)}} \exp(-s)~\mathrm{d}s\\
+                  & + \int_{0}^{\infty} \mathcal{N}\left( z \left| \ontopof{\left( \sqrt{2\tau^{2} s + (\varepsilon - \nu)^{2}} + \nu \right)\mu}{\left( \sqrt{2\tau^{2} s + (\varepsilon - \nu)^{2}} + \nu \right)^{2}\sigma^{2}} \right.\right) \cdot \frac{\exp\left( -\frac{(\varepsilon - \nu)^{2}}{2\tau^{2}} \right)}{2\sqrt{\pi \left( s + \frac{(\varepsilon - \nu)^{2}}{2\tau^{2}} \right)}} \exp(-s)~\mathrm{d}s\\
   \approx& \sum_{i = 1}^{n} w_{i} \frac{\exp\left( -\frac{(\varepsilon + \nu)^{2}}{2\tau^{2}} \right)}{2 \sqrt{\pi \left( x_{i} + \frac{(\varepsilon + \nu)^{2}}{2\tau^{2}} \right)}} \cdot \mathcal{N}\left( z \left|
-           \begin{array}{c}
-             -\left( \sqrt{2\tau^{2}x_{i} + (\varepsilon + \nu)^{2}} - \nu \right)\mu,\\
-             \left( \sqrt{2\tau^{2}x_{i} + (\varepsilon + \nu)^{2}} - \nu \right)^{2}\sigma^{2}
-           \end{array} \right.\right)\\
+           \ontopof{-\left( \sqrt{2\tau^{2}x_{i} + (\varepsilon + \nu)^{2}} - \nu \right)\mu}{\left( \sqrt{2\tau^{2}x_{i} + (\varepsilon + \nu)^{2}} - \nu \right)^{2}\sigma^{2}}
+           \right.\right)\\
                   &+ \sum_{i = 1}^{n} w_{i} \frac{\exp\left( -\frac{(\varepsilon - \nu)^{2}}{2\tau^{2}} \right)}{2\sqrt{\pi \left( x_{i} + \frac{(\varepsilon - \nu)^{2}}{2\tau^{2}} \right)}} \cdot \mathcal{N}\left( z \left|
-                    \begin{array}{c}
-                      \left( \sqrt{2\tau^{2} x_{i} + (\varepsilon - \nu)^{2}} + \nu \right)\mu,\\
-                      \left( \sqrt{2\tau^{2} x_{i} + (\varepsilon - \nu)^{2}} + \nu \right)^{2}\sigma^{2}
-                    \end{array} \right.\right)
+                    \ontopof{\left( \sqrt{2\tau^{2} x_{i} + (\varepsilon - \nu)^{2}} + \nu \right)\mu}{\left( \sqrt{2\tau^{2} x_{i} + (\varepsilon - \nu)^{2}} + \nu \right)^{2}\sigma^{2}}
+                    \right.\right)
 \end{align*}
 where the $x_{i}$ are the roots of the $n$-th Laguerre polynomial and the
 $w_{i}$ the associated weights.
