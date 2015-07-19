@@ -722,18 +722,36 @@ observe, that all of them are in direct proximity of the instability.
 
 \subsubsection{Gauss-Laguerre Quadrature}
 
+Another algorithm in the family of Gauss quadratures is Gauss-Laguerre
+quadrature. It is made for integrals of the form
+\begin{equation*}
+  \int_{0}^{\infty} f(x) \cdot \exp(-x)~\mathrm{d}x
+\end{equation*}
+which does not match our situation quite as well as Gauss-Hermite does, so we
+will need to do some more preparatory work. The motivation for trying
+Gauss-Laguerre quadrature is, that this procedure may cope better with the
+instability around $0$.
+
+To make Gauss-Laguerre quadrature applicable, we have to rewrite the integral
+from $-\infty$ to $\infty$ as two integrals from $0$ to $\infty$.
 \begin{align*}
   p(Z = z) & = \int_{-\infty}^{\infty} \mathcal{N}\left( z \mid y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(y \mid \nu, \tau^{2})~\mathrm{d}y\\
            & = \int_{-\infty}^{0} \mathcal{N}\left( z \mid y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(y \mid \nu, \tau^{2})~\mathrm{d}y + \int_{0}^{\infty} \mathcal{N}\left( z \mid y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(y \mid \nu, \tau^{2})~\mathrm{d}y\\
            & = -\int_{\infty}^{0} \mathcal{N}\left( z \mid -y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(-y \mid \nu, \tau^{2})~\mathrm{d}y + \int_{0}^{\infty} \mathcal{N}\left( z \mid y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(y \mid \nu, \tau^{2})~\mathrm{d}y\\
-           & = \int_{0}^{\infty} \mathcal{N}\left( z \mid -y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(-y \mid \nu, \tau^{2})~\mathrm{d}y + \int_{0}^{\infty} \mathcal{N}\left( z \mid y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(y \mid \nu, \tau^{2})~\mathrm{d}y\\
+           & = \int_{0}^{\infty} \mathcal{N}\left( z \mid -y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(-y \mid \nu, \tau^{2})~\mathrm{d}y + \int_{0}^{\infty} \mathcal{N}\left( z \mid y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(y \mid \nu, \tau^{2})~\mathrm{d}y
 \end{align*}
 
 Both of these integrals can be solved approximately through Gauss-Laguerre
-integration. Yet the integrands are not sufficiently differentiable in $0$, so
-we integrate over $[\varepsilon, \infty]$ for some $\varepsilon > 0$ instead of
-$[0, \infty]$. We begin with rearranging the first integrand to the form
-$f(y) * e^{-y}$.
+integration. Yet again we will first have to rewrite them in the required form
+and once again the integrands are not sufficiently differentiable in $0$. This
+time we may be able to avert the problem though through a very non-mathematical
+approach. Instead of integrating over $[0, \infty]$ we integrate over
+$[\varepsilon, \infty]$ for some $\varepsilon > 0$. For some $\varepsilon$ the
+payoff from not evaluating the integrand in the proximity of the instability may
+be greater than the reduced accuracy from ignoring an $\varepsilon$-strip of the
+integral.
+
+We begin with rearranging the first integrand to the form $f(y) * e^{-y}$.
 \begin{align*}
   & \int_{\varepsilon}^{\infty} \mathcal{N}\left( z \mid -y\mu, y^{2}\sigma^{2} \right) \cdot \mathcal{N}(-y \mid \nu, \tau^{2})~\mathrm{d}y \\
   =& \int_{\varepsilon}^{\infty} \mathcal{N}\left( z \mid -y\mu, y^{2}\sigma^{2} \right) \cdot \frac{1}{\sqrt{2 \pi \tau^{2}}} \exp\left( -\frac{(-y - \nu)^{2}}{2\tau^{2}} \right)~\mathrm{d}y\\
