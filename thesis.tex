@@ -960,6 +960,16 @@ Presumably rather easy would be the generalization to
 $f : \mathbb{R}^{n} \rightarrow \mathbb{R}^{m}$, i.e. allow $f$ to have multiple
 outputs.
 
+From a performance point of view it would be useful to put a bound on the number
+of components, that a mixture can have. Maybe there is a way to cut components
+from a mixture and amend the remaining components' parameters, such that the
+additional error from this operation is controllable and bounded. In the current
+implementation the product and quotient of two Gaussian variables are
+approximated by a mixture with $n$ components if you are evaluating it with
+Gauss-Hermite at $n$ integration points. This means, that the product of three
+mixtures with $a$, $b$ and $c$ components results in a mixture with $abcn^{2}$
+components, which a huge number since $n$ is normally in the low hundreds.
+
 The hardest part with the biggest payoff at the same time would be extending our
 techniques to dependent variables. You would have to redo almost everything in
 much more complex, because lemma \ref{lemma:mixture} does not hold for dependent
