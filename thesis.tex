@@ -220,14 +220,15 @@ able to handle this at all and just reported $\infty$.
   \label{fig:church-pdf}
 \end{figure}
 
-Symbolics give you a compact representation of exact solutions. The downside is,
-that symbolics are restricted to simple problems and the resulting formulas can
-be very complicated and expensive to evaluate. Sampling can cope with every
-combination, that is computable, but is only approximate. Our approach lies
-between symbolics and sampling, a symbolic approximation. We find a symbolic
-representation that can approximate arbitrary probability distributions and at
-the same time is closed under certain operations. So you can do calculations
-with distributions of your choosing and still obtain a symbolic result.
+Symbolic representations give you a way to handle exact solutions in a compact
+form. The downside is, that they are restricted to simple problems and the
+resulting formulas can be very complicated and expensive to evaluate. Sampling
+can cope with every combination, that is computable, but is only
+approximate. Our approach lies between symbolic representation and sampling, a
+symbolic approximation. We find a symbolic representation that can approximate
+arbitrary probability distributions and at the same time is closed under certain
+operations. So you can do calculations with distributions of your choosing and
+still obtain a symbolic result.
 
 We will
 \begin{itemize}
@@ -1079,10 +1080,10 @@ showcase in this section.
 
 \subsection{Affine Transformations}
 
-Affine transformations are not terribly interesting, because they can easily be
-calculated using symbolics. We will plot one anyway to demonstrate, that the
-attached library can correctly compute it. In figure \ref{fig:affine} we apply
-the affine transformation
+Affine transformations are not terribly interesting, because they can be
+calculated calculated exactly through parameter transformations. We will plot
+one anyway to demonstrate, that the attached library can correctly compute
+it. In figure \ref{fig:affine} we apply the affine transformation
 \begin{equation*}
   f(a, b, c) = \frac{3a}{5} + 2b - c - 3
 \end{equation*}
@@ -1206,10 +1207,10 @@ expected.
 \label{ch:conclusions}
 
 We have shown, that the way of symbolic approximation works and yields results
-comparable to ones derived through sampling or pure symbolics. It has to be said
-though, that the scope of this project is currently limited. To really keep up
-with the competing techniques, mixture approximation needs improvements in
-several areas ranging from easy to hard.
+comparable to ones derived through sampling or symbolic manipulation. It has to
+be said though, that the scope of this project is currently limited. To really
+keep up with the competing techniques, mixture approximation needs improvements
+in several areas ranging from easy to hard.
 
 The first and obvious improvement would be to implement more operations. At the
 moment we are limited to basic arithmetic, but there surely are more functions,
