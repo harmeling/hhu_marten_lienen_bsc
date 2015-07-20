@@ -676,11 +676,13 @@ approximate
 \begin{equation*}
   \int_{a}^{b} f(x) \cdot w(x)~\mathrm{d}x \approx \sum_{i = 1}^{n} w_{i} f(x_{i})
 \end{equation*}
-for various combinations of $a$, $b$ and $w$ as long as the integrand can be
-written as $f(x) \cdot w(x)$, where $w$ is a weight function determined by the
-specific algorithm and $f$ an arbitrary function from $C^{2n - 1}[a, b]$, if you
-want to approximate with $n$ summands. It probably does not need to be
-mentioned, but the approximation becomes more accurate with increasing $n$.
+with $n$ summands for various combinations of $a$, $b$ and $w$ as long as the
+integrand can be written as $f(x) \cdot w(x)$, where $w$ is a weight function
+determined by the specific algorithm and $f$ an arbitrary function from
+$C^{2n - 1}[a, b]$. $C^{n}[a, b]$ is thereby defined as the set of all
+functions, that are at least $n$ times continuously differentiable on $[a, b]$.
+It probably does not need to be mentioned, but the approximation becomes more
+accurate with increasing $n$.
 
 \subsubsection{Gauss-Hermite Quadrature}
 
