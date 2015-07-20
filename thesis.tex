@@ -71,6 +71,10 @@
 % Inline Julia
 \newcommand{\injulia}[1]{\mintinline{julia}{#1}}
 
+% Do not break inline equations
+\relpenalty=10000
+\binoppenalty=10000
+
 \addbibresource{references.bib}
 
 \begin{document}
@@ -132,7 +136,7 @@ mathematics at HHU for explaining to me, why Gauss-Hermite quadrature is
 unstable, when applied to the product of two Gaussian distributed random
 variables.
 
-Thanks to Prof. Dr. Stefan Harmeling for the idea, help, feedback and the
+Thanks to Prof.~Dr.~Stefan Harmeling for the idea, help, feedback and the
 ongoing affirmation, that there must be a way to make this work.
 
 \tableofcontents
@@ -252,7 +256,7 @@ We will
 \label{ch:idea}
 
 Consider $X_{i} \in \mathbb{R}, i \in \{ 1, \dots, n \}$ $n$ independent random
-variables with known PDFs $p(X_{i}~=~x)$,
+variables with known PDFs $p(X_{i}\hspace{0.1em}=\hspace{0.1em}x)$,
 $f : \bigtimes_{i} \supp(X_{i}) \rightarrow \mathbb{R}$ a function defined on at
 least the support of all the $X_{i}$ and $Y = f(X_{1}, \dots, X_{n})$ the
 dependent variable. The task is then to derive the probability distribution of
@@ -260,13 +264,13 @@ $Y$ or at least an approximation to it from the known distributions of the
 $X_{i}$.
 
 As explained in the first chapter, this problem is very hard in its full
-generality. Therefore we are going simplify it by restricting the $X_{i}$ as
+generality. Therefore we are going to simplify it by restricting the $X_{i}$ as
 well as $f$. First, we restrict the distributions of the $X_{i}$ to mixture
-distributions, especially mixtures of Gaussians. The first argument for mixtures
+distributions, especially mixtures of Gaussians. The first advantage of mixtures
 of Gaussians is, that with enough components you can approximate any
 distribution to arbitrary precision as you can see in figure
 \ref{fig:idea-em}. So we have simplified one aspect of the problem, while still
-being able to model any distribution. The other argument is, that Gaussian
+being able to model any distribution. The other advantage is, that Gaussian
 distributions are closed under addition and subtraction and the products and
 quotients can be closely approximated by mixtures of Gaussians. This is
 important, because these closure properties of distributions are preserved, when
@@ -328,14 +332,13 @@ closely model $p$.
 
 As shown in figure \ref{fig:theory-em} EM also works for distributions, that do
 not share many properties with Gaussians, but yields the best results for
-distributions that are symmetric and have whole $\mathbb{R}$ as support.
+distributions that have whole $\mathbb{R}$ as support.
 
 \section{Closure of Mixtures}
 \label{sec:closure}
 
-Let $n \in \mathbb{N}_{0}$, $X$ a real random variable with mixture distribution
-and $Y_{i}, i \in \{ 1, \dots, n \}$ another $n$ real random variables with
-mixture distributions.
+Let $X$ and $Y_{1}, \dots, Y_{n}$ be random variables with mixture distribution,
+i.e.
 \begin{equation*}
   p(X = x) = \sum_{i = 1}^{m} \alpha_{i} \cdot p(X_{i} = x) \qquad p(Y_{i} = y) = \sum_{j = 1}^{m_{i}} \beta_{i,j} \cdot p(Y_{i,j} = y)
 \end{equation*}
@@ -403,7 +406,7 @@ will restate here.
   Next we examine the Jacobian $J$ of $g^{-1}$. Let
   $(z, y_{1}, \dots, y_{n})^{T} \in \mathbb{R}^{n + 1}$.
   \begin{equation*}
-    J :=
+    J =
     \begin{pmatrix}
       \frac{\mathrm{d}f_{y_{1}, \dots, y_{n}}^{-1}}{\partial z} & \frac{\mathrm{d}f_{y_{1}, \dots, y_{n}}^{-1}}{\partial y_{1}} & \cdots & \frac{\mathrm{d}f_{y_{1}, \dots, y_{n}}^{-1}}{\partial y_{n}}\\
       \frac{\mathrm{d} y_{1}}{\mathrm{d} z} & \frac{\mathrm{d} y_{1}}{\mathrm{d} y_{1}} & \cdots & \frac{\mathrm{d} y_{1}}{\mathrm{d} y_{n}}\\
@@ -523,8 +526,7 @@ First we need to establish two rearrangement rules for Gaussian distributions.
 \end{proof2}
 
 Next we restate a special case of lemma \ref{lemma:multivariate-change} taken
-from \cite[chapter~2.6.2]{murphy}, because it will make it easier to see, that
-and how it is used here.
+from \cite[chapter~2.6.2]{murphy}.
 \begin{lemma}[Change of variables]
   \label{lemma:change}
   Let $f : \mathbb{R} \rightarrow \mathbb{R}$ be differentiable, monotonic and
@@ -712,12 +714,11 @@ combination and thus a real mixture distribution.
   \end{subfigure}
   \caption{A product distribution approximated by a mixture of Gaussians}
 \end{figure}
-A plot shows, that it is a reasonable fit. In figure \ref{fig:gauss-laguerre} we
-see, that the calculated mixture of Gaussians closely follows the true PDF
-obtained by sampling except in a neighborhood of $0$. The zoomed-in plot in
-figure \ref{fig:gauss-laguerre-zoomed} confirms indeed, that the approximation
-still has a similar shape, but is more wobbly than the true PDF in the proximity
-of $0$.
+Figure \ref{fig:gauss-laguerre} shows, that the calculated mixture of Gaussians
+closely follows the true PDF obtained by sampling except in a neighborhood of
+$0$. The zoomed-in plot in figure \ref{fig:gauss-laguerre-zoomed} confirms
+indeed, that the approximation still has a similar shape, but is more wobbly
+than the true PDF in the proximity of $0$.
 
 The bad fit around $0$ is actually inherent to our problem and choice of
 algorithm. Remember the requirement of any Gauss quadrature method, that $f$ be
@@ -1080,10 +1081,10 @@ showcase in this section.
 
 \subsection{Affine Transformations}
 
-Affine transformations are not terribly interesting, because they can be
-calculated calculated exactly through parameter transformations. We will plot
-one anyway to demonstrate, that the attached library can correctly compute
-it. In figure \ref{fig:affine} we apply the affine transformation
+Affine transformations are less interesting in the context of this thesis,
+because they can be calculated exactly through parameter transformations. We
+will plot one anyway to demonstrate, that the attached library can correctly
+compute it. In figure \ref{fig:affine} we apply the affine transformation
 \begin{equation*}
   f(a, b, c) = \frac{3a}{5} + 2b - c - 3
 \end{equation*}
@@ -1226,8 +1227,8 @@ hinted at throughout section \ref{sec:closure}. The problem with Gaussian
 components is, that the math only allows to apply functions, that are defined on
 at least the complete support of the inputs. This forbids things like taking the
 logarithm of a mixture of Gaussians, because they will always have non-zero
-probability of being negative no matter the means and variances. Gamma and
-inverse Gaussian distributions are promising candidates, that only allow
+probability of being negative no matter what the means and variances are. Gamma
+and inverse Gaussian distributions are promising candidates, that only allow
 positive reals, but at the same time have two parameters to influence mean and
 variance and may thus give similar flexibility as a mixture of Gaussians.
 
@@ -1248,9 +1249,9 @@ components, which a huge number since $n$ is normally in the low hundreds.
 The hardest part with the biggest payoff at the same time would be extending our
 techniques to dependent variables. You would have to redo almost everything in
 much more complex, because lemma \ref{lemma:mixture} does not hold for dependent
-variables. The upside is, that you will be able to evaluate $X^{2}$ and terms,
-that include the same variable multiple times, as well as work with variables
-that are in more ways dependent than just being the same variable.
+variables. The upside is, that you will be able to evaluate, for example, the
+square of a random variable and generally terms with variables that are
+dependent on each other in non-trivial ways.
 
 \begin{appendices}
   \chapter{Source Code}
