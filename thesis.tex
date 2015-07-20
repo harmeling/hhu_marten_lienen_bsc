@@ -464,11 +464,19 @@ $Z$'s distribution.
 
 \begin{lemma}
   \label{lemma:components}
-  If $f(X_{i}, Y_{1,k_{1}}, \dots, Y_{n,k_{n}})$ has a Gaussian mixture
-  distribution, $Z$ has a Gaussian mixture distribution as well.
+  If $f(X_{i}, Y_{1,k_{1}}, \dots, Y_{n,k_{n}})$ has a mixture distribution, $Z$
+  has a mixture distribution as well.
 \end{lemma}
 \begin{proof2}
-  Trivial.
+  We will not proof it in full rigor, because it is only one rearrangement, but
+  would involve a lot of additional indices for the distribution of $f$.
+  \begin{align*}
+    p(Z = z) = & \sum_{i = 1}^{m} \sum_{k_{1} = 1}^{m_{1}} \dots \sum_{k_{n} = 1}^{m_{n}} \alpha_{i} \left( \prod_{j = 1}^{n} \beta_{j,k_{j}} \right) p(f(X_{i}, Y_{1,k_{1}}, \dots, Y_{n,k_{n}}) = z)\\
+    \intertext{Plug in the mixture distribution of $f$}
+    = & \sum_{i = 1}^{m} \sum_{k_{1} = 1}^{m_{1}} \dots \sum_{k_{n} = 1}^{m_{n}} \alpha_{i} \left( \prod_{j = 1}^{n} \beta_{j,k_{j}} \right) \sum_{p} \gamma_{p} p_{f}(z)\\
+    \intertext{Push the coefficients of $Z$ into the inner sum}
+    = & \sum_{i = 1}^{m} \sum_{k_{1} = 1}^{m_{1}} \dots \sum_{k_{n} = 1}^{m_{n}} \sum_{p} \alpha_{i} \left( \prod_{j = 1}^{n} \beta_{j,k_{j}} \right) \gamma_{p} p_{f}(z)\\
+  \end{align*}
 \end{proof2}
 
 Lemma \ref{lemma:mixture} and \ref{lemma:components} together are the foundation
