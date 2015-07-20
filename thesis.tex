@@ -442,9 +442,8 @@ $Z$'s distribution.
 \begin{proof2}
   Let $x = f_{y_{1}, \dots, y_{n}}^{-1}(z)$.
   \begin{align*}
-    & p(Z = z)\\
     \intertext{Expand marginal distribution as an integral over the joint distribution}
-    = & \int_{S_{n}} \dots \int_{S_{1}} p(Z = z, Y_{1, \dots, n} = y_{1, \dots, n})~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
+    & p(Z = z) = \int_{S_{n}} \dots \int_{S_{1}} p(Z = z, Y_{1, \dots, n} = y_{1, \dots, n})~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
     \intertext{Rewrite it using lemma \ref{lemma:joint-pdf}}
     = & \int_{S_{n}} \dots \int_{S_{1}} \left| \frac{\mathrm{d}x}{\mathrm{d}z} \right| \cdot p\left(X = f_{y_{1}, \dots, y_{n}}^{-1}(z), Y_{1, \dots, n} = y_{1, \dots, n}\right)~\mathrm{d}y_{1}\dots \mathrm{d}y_{n}\\
     \intertext{Use the fact, that $X$ and $Y_{i}$ are independent, i.e. that the joint PDF can be factorized}
