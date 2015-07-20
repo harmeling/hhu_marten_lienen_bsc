@@ -27,7 +27,7 @@ samples = rand(amodel, N) .* rand(bmodel, N)
 
 plot_histogram(samples, range, bins=n)
 plot(X, pdf(c.distribution, X), label="Gauss-Hermite", lw=3, alpha=0.8, color="red")
-plot(X, pdf(f.distribution, X), label="Gauss-Laguerre", lw=3, alpha=0.8, color="yellow")
+plot(X, pdf(f.distribution, X), label="Gauss-Laguerre", lw=3, alpha=0.8, color="green")
 
 legend()
 savefig("hermite-laguerre.png")
