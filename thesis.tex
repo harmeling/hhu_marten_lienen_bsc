@@ -1246,6 +1246,57 @@ expected.
 
 \section{Complex Examples}
 
+In this section we will present two examples, that are more complex in that they
+combine the results from the previous two sections.
+
+\subsection{Introduction}
+
+We will first try our library on the example from the introduction, that maple
+could not work out. Recall that it was about the operation
+\begin{equation*}
+  \frac{X_{1} \cdot X_{2}}{Y}
+\end{equation*}
+with the random variables distributed as follows
+\begin{equation*}
+  X_{1} \sim \mathcal{N}(1, 2) \qquad X_{2} \sim Gamma(1, 3) \qquad Y \sim Exponential(2)
+\end{equation*}
+We begin with modelling the inputs as mixtures of Gaussians. However we use only
+$3$ components and achieve the fits displayed in figure
+\ref{fig:introduction-vars}. The mixtures recreate the bulk of the probability
+mass, but as expected the performance around sharp corners is poor with such a
+low number of components. Surprisingly the actual result in figure
+\ref{fig:introduction-result} turns out to look very nice. Even though the
+inputs were only roughly matched, the end result is almost a pixel perfect match
+to the sampled PDF.
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[t]{0.3\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/complex/introduction-var-x1}
+    \caption{Gaussian distribution is of course perfectly approximated}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.3\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/complex/introduction-var-x2}
+    \caption{Three components captured the outline of a Gamma distribution}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.3\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/complex/introduction-var-y}
+    \caption{The same with the exponential distribution}
+  \end{subfigure}
+  \caption{The input variables approximated as mixtures of Gaussians}
+  \label{fig:introduction-vars}
+\end{figure}
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\textwidth]{thesis/complex/introduction-result}
+  \caption{Our result closely matches the sampled PDF nonetheless}
+  \label{fig:introduction-result}
+\end{figure}
+
 \chapter{Conclusions and Further Work}
 \label{ch:conclusions}
 
