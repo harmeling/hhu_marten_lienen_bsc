@@ -112,7 +112,7 @@
     \vspace{6em}
     \begin{minipage}{0.4\textwidth}
       \begin{flushleft}
-        \small{\emph{Supervised by}}\\
+        \small{\emph{Supervised and reviewed by}}\\
         \vspace{0.3em}
         {\large Prof. Dr. Stefan Harmeling}
       \end{flushleft}
@@ -142,7 +142,7 @@
 
 Thanks to Andreas Troll and Dr. Georg Jansing from the institute of applied
 mathematics at HHU for explaining to me, why Gauss-Hermite quadrature is
-unstable, when applied to the product of two Gaussian distributed random
+unstable, when it is applied to the product of two Gaussian distributed random
 variables.
 
 Thanks to Prof.~Dr.~Stefan Harmeling for the idea, help, feedback and the
@@ -311,8 +311,8 @@ that mixture distributions are closed under certain functions. In the end we
 will look at Gaussians as component distributions of mixture distributions and
 give exact results and approximations for basic function applications.
 
-We have written a (very) short introduction to random variables and probability
-distributions for the uninitiated in appendix \ref{ch:basics}.
+We have written a (very) short and informal introduction to random variables and
+probability distributions for the uninitiated in appendix \ref{ch:basics}.
 
 \section{Modelling Distributions as Mixtures of Gaussians}
 \label{sec:em}
@@ -1318,7 +1318,8 @@ to the sampled PDF.
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.7\textwidth]{thesis/complex/introduction-result}
-  \caption{Our result closely matches the sampled PDF nonetheless}
+  \caption{Our result closely matches the sampled PDF regardless of the rough
+    fit on the inputs}
   \label{fig:introduction-result}
 \end{figure}
 
@@ -1442,8 +1443,9 @@ dependent on each other in non-trivial ways.
   The notation $X \sim \mathcal{N}(\mu, \sigma)$ means, that the random variable
   $X$ has the associated distribution $\mathcal{N}$ with parameters $\mu$ and
   $\sigma$. The function, that tells you, how high the probability density is at
-  $x$, is written $p(X = x)$. To determine this, $p$ plugs the value $x$ into
-  the associated distribution of $X$. In this case it looks like
+  $x$, i.e. how probable $x$ is, is written $p(X = x)$. To determine this, $p$
+  plugs the value $x$ into the associated distribution of $X$. In this case we
+  have
   \begin{equation*}
     p(X = x) = \mathcal{N}\left( x \mid \mu, \sigma \right) = \frac{1}{\sqrt{2 \pi \sigma^{2}}} \exp \left( - \frac{(x - \mu)^{2}}{2\sigma^{2}} \right)
   \end{equation*}
