@@ -58,7 +58,13 @@
 % Define replacements for UTF-8 characters in source code
 \usepackage{newunicodechar}
 \newunicodechar{μ}{$\mu$}
+\newunicodechar{ν}{$\nu$}
+\newunicodechar{σ}{$\sigma$}
 \newunicodechar{Σ}{$\Sigma$}
+\newunicodechar{τ}{$\tau$}
+\newunicodechar{π}{$\pi$}
+\newunicodechar{ϵ}{$\varepsilon$}
+\newunicodechar{ξ}{$\xi$}
 
 \newtheorem{lemma}{Lemma}
 \newtheorem*{corollary}{Corollary}
@@ -1459,7 +1465,30 @@ dependent on each other in non-trivial ways.
   \chapter{Source Code}
   \label{ch:source}
 
+  \section{Transforms.jl}
+
+  The main file, that defines the central type \injulia{RandomVariable} and
+  operations on mixtures independent from the actual component distributions.
+
   \inputminted{julia}{src/Transforms.jl}
+
+  \section{em.jl}
+
+  Our implementation of the EM algorithm.
+
+  \inputminted{julia}{src/em.jl}
+
+  \section{integration.jl}
+
+  Types for the different integration algorithms and their parameters.
+
+  \inputminted{julia}{src/integration.jl}
+
+  \section{components/normal.jl}
+
+  The implementation of Gaussian distributions as mixture components.
+
+  \inputminted{julia}{src/components/normal.jl}
 \end{appendices}
 
 \printbibliography
