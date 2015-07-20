@@ -10,6 +10,9 @@
 \usepackage{amssymb}
 \usepackage{amsthm}
 
+% Force figures to appear in the section they were declared in
+\usepackage[section]{placeins}
+
 % Useful extensions for math
 \usepackage{mathtools}
 
@@ -796,6 +799,7 @@ observe, that all of them are in direct proximity of the instability.
 \end{figure}
 
 \subsubsection{Gauss-Laguerre Quadrature}
+\label{sec:gaussians-laguerre}
 
 Another algorithm in the family of Gauss quadratures is Gauss-Laguerre
 quadrature. It is made for integrals of the form
@@ -1154,13 +1158,17 @@ expected.
 
 \subsection{Products with Gauss-Hermite}
 
+Multiplication with Gauss-Hermite works quite well for the most part as
+displayed in figure \ref{fig:product-hermite}. Towards the edges it closely
+approximates the sampled PDF approximation, but the peak in the middle cannot be
+recreated. You have to use really high numbers of components as we did figure
+\ref{fig:product-hermite-2} to sort this out.
 \begin{figure}[h]
   \centering
   \begin{subfigure}[t]{0.45\textwidth}
     \centering
     \includegraphics[width=\textwidth]{thesis/operations/product-hermite-vars}
     \caption{The variables to multiply}
-    \label{fig:product-hermite-vars}
   \end{subfigure}
   \hfill
   \begin{subfigure}[t]{0.45\textwidth}
@@ -1177,7 +1185,6 @@ expected.
     \centering
     \includegraphics[width=\textwidth]{thesis/operations/product-hermite-100-components}
     \caption{600 components}
-    \label{fig:product-hermite-vars}
   \end{subfigure}
   \hfill
   \begin{subfigure}[t]{0.45\textwidth}
@@ -1191,6 +1198,13 @@ expected.
 
 \subsection{Products with Gauss-Laguerre}
 
+As our quick test in section \ref{sec:gaussians-laguerre} already showed, this
+does not really work right now. At least the results are far worse than the ones
+obtained through Gauss-Hermite. It produces a shape to the sampled PDF, but
+overshoots around the instability (figure \ref{fig:product-laguerre}). The
+positive thing to take away from this is, that the idea to ignore an
+$\varepsilon$-strip has the desired effect of controlling the error around the
+instability (figure \ref{fig:product-laguerre-epsilon}).
 \begin{figure}[h]
   \centering
   \begin{subfigure}[t]{0.45\textwidth}
@@ -1222,11 +1236,14 @@ expected.
   \end{subfigure}
   \caption{At least the idea works, that you can control the height of the peaks
     through $\varepsilon$}
-  \label{fig:product-laguerre}
+  \label{fig:product-laguerre-epsilon}
 \end{figure}
 
 \subsection{Quotients}
 
+In contrast to multiplication division works really well and Gauss-Hermite
+quadrature will produce a good approximation with only a handful of components
+as shown in figure \ref{fig:quotient}.
 \begin{figure}[h]
   \centering
   \begin{subfigure}[t]{0.45\textwidth}
