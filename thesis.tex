@@ -887,6 +887,7 @@ variance, though we did not find any.
 \end{figure}
 
 \subsection{Quotients of Gaussian Random Variables}
+\label{sec:gaussians-quotients}
 
 Division shares all the important properties with multiplication: It, too, is
 differentiable and monotonic in the first argument and Gaussian distributions
@@ -1296,22 +1297,74 @@ to the sampled PDF.
   \begin{subfigure}[t]{0.3\textwidth}
     \centering
     \includegraphics[width=\textwidth]{thesis/complex/introduction-var-x2}
-    \caption{Three components captured the outline of a Gamma distribution}
+    \caption{Three components captured the rough outline of a Gamma
+      distribution}
   \end{subfigure}
   \hfill
   \begin{subfigure}[t]{0.3\textwidth}
     \centering
     \includegraphics[width=\textwidth]{thesis/complex/introduction-var-y}
-    \caption{The same with the exponential distribution}
+    \caption{The same is true for the exponential distribution}
   \end{subfigure}
   \caption{The input variables approximated as mixtures of Gaussians}
   \label{fig:introduction-vars}
 \end{figure}
-\begin{figure}
+\begin{figure}[h]
   \centering
-  \includegraphics[width=0.8\textwidth]{thesis/complex/introduction-result}
+  \includegraphics[width=0.7\textwidth]{thesis/complex/introduction-result}
   \caption{Our result closely matches the sampled PDF nonetheless}
   \label{fig:introduction-result}
+\end{figure}
+
+\subsection{Reciprocal}
+
+Approximating the reciprocal of a random variable would make for an interesting
+experiment. Remember, that this was the only operation, that we could not work
+out in section \ref{sec:affine-transforms}. Trying techniques like Gauss-Hermite
+quadrature on this problem is also impossible, since there is no integral to
+evaluate. We may however be able to calculate it with a trick. Instead of trying
+to work out $\frac{1}{X}$, we will use our library to calculate $\frac{U}{X}$,
+where $X$ is the variable, that we would like to obtain the reciprocal
+distribution from, and $U$ is a uniform distribution from $1 - \varepsilon$ to
+$1 + \varepsilon$. You can see the distributions we used in figure
+\ref{fig:reciprocal-vars}.
+
+Figure \ref{fig:reciprocal-result} shows, that it unfortunately did not work as
+intended. The picture is nonetheless very interesting, because it actually
+visualizes, how our algorithm works. Notice, that the peaks all look very
+similar to our $1$ approximation. And indeed, if you recall the actual formula
+for the quotient application from section \ref{sec:gaussians-quotients}
+\begin{equation*}
+  p(Z = z) \approx \sum_{i = 1}^{n} \frac{w_{i}}{\sqrt{\pi}} \cdot \mathcal{N}\left( z \left| \frac{\mu}{\sqrt{2 \tau^{2}} x_{i} + \nu}, \frac{\sigma^{2}}{\left(\sqrt{2 \tau^{2}} x_{i} + \nu\right)^{2}} \right.\right)
+\end{equation*}
+you can see, that the approximation's components are all transformed copies of
+the numerator variable. So it takes our ``uniform'' distribution and copies it
+everywhere, but the copies' distributions are so narrow, that they have no
+overlap at all, and it looks like a forest of lonely firs. If you look closely,
+the components' variances even make sense. The distributions are narrow and
+high, where the actual distributions is high, and small and wide, where it is
+flat.
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[t]{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/complex/reciprocal-one}
+    \caption{Our approximation to $1$}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/complex/reciprocal-x}
+    \caption{A mixture of Gaussians}
+  \end{subfigure}
+  \caption{The $1$ and the variable to divide it by}
+  \label{fig:reciprocal-vars}
+\end{figure}
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=0.8\textwidth]{thesis/complex/reciprocal-result}
+  \caption{Lots of peaks instead of one smooth curve}
+  \label{fig:reciprocal-result}
 \end{figure}
 
 \chapter{Conclusions and Further Work}
