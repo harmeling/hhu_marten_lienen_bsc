@@ -302,6 +302,9 @@ that mixture distributions are closed under certain functions. In the end we
 will look at Gaussians as component distributions of mixture distributions and
 give exact results and approximations for basic function applications.
 
+We have written a (very) short introduction to random variables and probability
+distributions for the uninitiated in appendix \ref{ch:basics}.
+
 \section{Modelling Distributions as Mixtures of Gaussians}
 \label{sec:em}
 
@@ -1292,6 +1295,45 @@ square of a random variable and generally terms with variables that are
 dependent on each other in non-trivial ways.
 
 \begin{appendices}
+  \chapter{Random Variables Basics}
+  \label{ch:basics}
+
+  In this thesis we work with random variables. Random variables are
+  mathematical objects, that do not have a definite value, but rather take on
+  specific values with a certain probability. The probability for a specific
+  value is given by a function, called the probability distribution, which is
+  associated to the random variable.
+
+  There are infinitely many functions, that are valid probability distributions,
+  but only some of them are important and get a name. One of them is the
+  Gaussian distribution, symbolized with $\mathcal{N}(\mu, \sigma)$. It has two
+  parameters, the mean $\mu$ and the variance $\sigma$. The former tells you,
+  which value is the most probable, while the latter says, how fast numbers get
+  less probable the farther they are from $\mu$.
+
+  The notation $X \sim \mathcal{N}(\mu, \sigma)$ means, that the random variable
+  $X$ has the associated distribution $\mathcal{N}$ with parameters $\mu$ and
+  $\sigma$. The function, that tells you, how high the probability density is at
+  $x$, is written $p(X = x)$. To determine this, $p$ plugs the value $x$ into
+  the associated distribution of $X$. In this case it looks like
+  \begin{equation*}
+    p(X = x) = \mathcal{N}\left( x \mid \mu, \sigma \right) = \frac{1}{\sqrt{2 \pi \sigma^{2}}} \exp \left( - \frac{(x - \mu)^{2}}{2\sigma^{2}} \right)
+  \end{equation*}
+  The term in the middle is an alias for $p(X = x)$ if the distribution of $X$
+  is known or you want to put it into the reader's focus.
+
+  Another important term for this thesis is mixture distribution. Assume some
+  random variables $Y_{1}, \dots, Y_{n}$. Now we can define another random
+  variable $Y$, that, when forced to take on a value, takes on a value from
+  $Y_{1}$ with probability $\alpha_{1}$, from $Y_{2}$ with probability
+  $\alpha_{2}$ and so on. This allows $Y$ to have a complex distribution, even
+  when all of its components $Y_{1}$ to $Y_{n}$ only have simple distributions
+  such as Gaussians. There is also a formula for the resulting probability
+  density function of $Y$.
+  \begin{equation*}
+    p(Y = y) = \sum_{i = 1}^{n} \alpha_{i} \cdot p(Y_{i} = y)
+  \end{equation*}
+
   \chapter{Source Code}
   \label{ch:source}
 
