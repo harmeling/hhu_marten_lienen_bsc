@@ -246,8 +246,8 @@ We will
   \ref{sec:gaussians})
 \item describe the structure of the julia implementation (Section
   \ref{ch:implementation})
-\item showcase our results and compare them to ones that were derived
-  symbolically or through sampling (Section \ref{ch:comparisons})
+\item showcase our results and compare them to ones that were derived through
+  sampling (Section \ref{ch:comparisons})
 \item conclude this thesis with ideas for further work (Section
   \ref{ch:conclusions})
 \end{itemize}
@@ -452,7 +452,7 @@ argument with $y_{1}, \dots, y_{n}$ held constant, i.e.
 \begin{proof2}
   \begin{align*}
     \int_{X} \prod_{i = 1}^{n} \left( \sum_{j = 1}^{m_{i}} \alpha_{i, j} f_{i, j}(x) \right)~\mathrm{d}x = & \int_{X} \sum_{j_{1} = 1}^{m_{1}} \dots \sum_{j_{n} = 1}^{m_{n}} \left( \prod_{i = 1}^{n} \alpha_{i, j_{i}} f_{i, j_{i}}(x) \right)~\mathrm{d}x\\
-    \intertext{Exchange integral and sums}
+    \intertext{Interchange integral and sums}
     = & \sum_{j_{1} = 1}^{m_{1}} \dots \sum_{j_{n} = 1}^{m_{n}} \int_{X} \left( \prod_{i = 1}^{n} \alpha_{i, j_{i}} f_{i, j_{i}}(x) \right)~\mathrm{d}x\\
     \intertext{Regroup factors}
     = & \sum_{j_{1} = 1}^{m_{1}} \dots \sum_{j_{n} = 1}^{m_{n}} \int_{X} \left( \prod_{i = 1}^{n} \alpha_{i, j_{i}} \right) \left( \prod_{i = 1}^{n} f_{i, j_{i}}(x) \right)~\mathrm{d}x\\
@@ -500,7 +500,8 @@ derive the general form of $Z$'s distribution.
 \end{lemma}
 \begin{proof2}
   We will not proof it in full rigor, because it is only one rearrangement, but
-  would involve a lot of additional indices for the distribution of $f$.
+  would involve a lot of additional indices for the distribution of
+  $f(X_{i}, Y_{1,k_{1}}, \dots, Y_{n,k_{n}})$.
   \begin{align*}
     p(Z = z) = & \sum_{i = 1}^{m} \sum_{k_{1} = 1}^{m_{1}} \dots \sum_{k_{n} = 1}^{m_{n}} \alpha_{i} \left( \prod_{j = 1}^{n} \beta_{j,k_{j}} \right) p(f(X_{i}, Y_{1,k_{1}}, \dots, Y_{n,k_{n}}) = z)\\
     \intertext{Plug in the mixture distribution of $f$}
