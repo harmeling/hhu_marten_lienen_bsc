@@ -1074,11 +1074,112 @@ $90^{\circ}$ corner than if it were of another degree.
 
 \section{Operations on Mixtures of Gaussians}
 
+Next we examined arithmetic operations on mixtures of Gaussians, which we will
+showcase in this section.
+
 \subsection{Affine Transformations}
+
+Affine transformations are not terribly interesting, because they can easily be
+calculated using symbolics. We will plot one anyway to demonstrate, that the
+attached library can correctly compute it. In figure \ref{fig:affine} we apply
+the affine transformation
+\begin{equation*}
+  f(a, b, c) = \frac{3a}{5} + 2b - c - 3
+\end{equation*}
+to the variables plotted in figure \label{fig:affine-vars}. The computed mixture
+plotted in figure \ref{fig:affine-result} is perfectly consistent with the
+sampled PDF as expected.
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[t]{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/operations/affine-vars}
+    \caption{The variables to transform}
+    \label{fig:affine-vars}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/operations/affine-result}
+    \caption{The resulting density on top of the sampled density}
+    \label{fig:affine-result}
+  \end{subfigure}
+  \caption{Affine transformations are calculated exactly}
+  \label{fig:affine}
+\end{figure}
 
 \subsection{Products with Gauss-Hermite}
 
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[t]{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/operations/product-hermite-vars}
+    \caption{The variables to multiply}
+    \label{fig:product-hermite-vars}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/operations/product-hermite-50-components}
+    \caption{Approximating the product distribution with $300$ components}
+  \end{subfigure}
+  \caption{Approximating a product distribution}
+  \label{fig:product-hermite}
+\end{figure}
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[t]{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/operations/product-hermite-100-components}
+    \caption{600 components}
+    \label{fig:product-hermite-vars}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/operations/product-hermite-2000-components}
+    \caption{12000 components}
+  \end{subfigure}
+  \caption{You really need a lot of components to model it near the instability}
+  \label{fig:product-hermite-2}
+\end{figure}
+
 \subsection{Products with Gauss-Laguerre}
+
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[t]{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/operations/product-laguerre-vars}
+    \caption{The variables to multiply}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/operations/product-laguerre-0}
+    \caption{Approximation with $\varepsilon = 0$}
+  \end{subfigure}
+  \caption{Gauss-Laguerre produces pretty bad results}
+  \label{fig:product-laguerre}
+\end{figure}
+\begin{figure}[h]
+  \centering
+  \begin{subfigure}[t]{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/operations/product-laguerre-5}
+    \caption{Approximation with $\varepsilon = 0.05$}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[t]{0.45\textwidth}
+    \centering
+    \includegraphics[width=\textwidth]{thesis/operations/product-laguerre-10}
+    \caption{Approximation with $\varepsilon = 0.1$}
+  \end{subfigure}
+  \caption{At least the idea works, that you can control the height of the peaks
+    through $\varepsilon$}
+  \label{fig:product-laguerre}
+\end{figure}
 
 \subsection{Quotients}
 
