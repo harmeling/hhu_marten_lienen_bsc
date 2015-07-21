@@ -1167,9 +1167,9 @@ expected.
 
 Multiplication with Gauss-Hermite works quite well for the most part as
 displayed in figure \ref{fig:product-hermite}. Towards the edges it closely
-approximates the sampled PDF approximation, but the peak in the middle cannot be
-recreated. You have to use really high numbers of components as we did figure
-\ref{fig:product-hermite-2} to sort this out.
+approximates the sampled PDF approximation, but the peak in the middle cannot
+easily be recreated. You have to use really high numbers of components as we did
+in figure \ref{fig:product-hermite-2} to sort this out.
 \begin{figure}[h]
   \centering
   \begin{subfigure}[t]{0.45\textwidth}
@@ -1207,8 +1207,8 @@ recreated. You have to use really high numbers of components as we did figure
 
 As our quick test in section \ref{sec:gaussians-laguerre} already showed, this
 does not really work right now. At least the results are far worse than the ones
-obtained through Gauss-Hermite. It produces a shape to the sampled PDF, but
-overshoots around the instability (figure \ref{fig:product-laguerre}). The
+obtained through Gauss-Hermite. It produces a shape similar to the sampled PDF,
+but overshoots around the instability (figure \ref{fig:product-laguerre}). The
 positive thing to take away from this is, that the idea to ignore an
 $\varepsilon$-strip has the desired effect of controlling the error around the
 instability (figure \ref{fig:product-laguerre-epsilon}).
@@ -1225,7 +1225,7 @@ instability (figure \ref{fig:product-laguerre-epsilon}).
     \includegraphics[width=\textwidth]{thesis/operations/product-laguerre-0}
     \caption{Approximation with $\varepsilon = 0$}
   \end{subfigure}
-  \caption{Gauss-Laguerre produces pretty bad results}
+  \caption{Gauss-Laguerre produces pretty inaccurate results}
   \label{fig:product-laguerre}
 \end{figure}
 \begin{figure}[h]
@@ -1249,8 +1249,8 @@ instability (figure \ref{fig:product-laguerre-epsilon}).
 \subsection{Quotients}
 
 In contrast to multiplication division works really well and Gauss-Hermite
-quadrature will produce a good approximation with only a handful of components
-as shown in figure \ref{fig:quotient}.
+quadrature produces a good approximation with only a handful of components as
+shown in figure \ref{fig:quotient}.
 \begin{figure}[h]
   \centering
   \begin{subfigure}[t]{0.45\textwidth}
@@ -1264,7 +1264,7 @@ as shown in figure \ref{fig:quotient}.
     \includegraphics[width=\textwidth]{thesis/operations/quotient-2-components}
     \caption{Approximation with $12$ components}
   \end{subfigure}
-  \caption{Just $12$ components give you are good fit already}
+  \caption{Just $12$ components give you a good fit already}
   \label{fig:quotient}
 \end{figure}
 
@@ -1284,8 +1284,8 @@ with the random variables distributed as follows
 \begin{equation*}
   X_{1} \sim \mathcal{N}(1, 2) \qquad X_{2} \sim Gamma(1, 3) \qquad Y \sim Exponential(2)
 \end{equation*}
-We begin with modelling the inputs as mixtures of Gaussians. However we use only
-$3$ components and achieve the fits displayed in figure
+We begin with modelling the inputs as mixtures of Gaussians. However we only use
+$3$ components and model the variables as displayed in figure
 \ref{fig:introduction-vars}. The mixtures recreate the bulk of the probability
 mass, but as expected the performance around sharp corners is poor with such a
 low number of components. Surprisingly the actual result in figure
@@ -1303,7 +1303,7 @@ to the sampled PDF.
   \begin{subfigure}[t]{0.3\textwidth}
     \centering
     \includegraphics[width=\textwidth]{thesis/complex/introduction-var-x2}
-    \caption{Three components captured the rough outline of a Gamma
+    \caption{Three components only capture the rough outline of a Gamma
       distribution}
   \end{subfigure}
   \hfill
@@ -1339,14 +1339,15 @@ $1 + \varepsilon$. You can see the distributions we used in figure
 Figure \ref{fig:reciprocal-result} shows, that it unfortunately did not work as
 intended. The picture is nonetheless very interesting, because it actually
 visualizes, how our algorithm works. Notice, that the peaks all look very
-similar to our $1$ approximation. And indeed, if you recall the actual formula
-for the quotient application from section \ref{sec:gaussians-quotients}
+similar to our approximation to $1$. And indeed, if you recall the actual
+formula for the quotient approximation from section
+\ref{sec:gaussians-quotients}
 \begin{equation*}
   p(Z = z) \approx \sum_{i = 1}^{n} \frac{w_{i}}{\sqrt{\pi}} \cdot \mathcal{N}\left( z \left| \frac{\mu}{\sqrt{2 \tau^{2}} x_{i} + \nu}, \frac{\sigma^{2}}{\left(\sqrt{2 \tau^{2}} x_{i} + \nu\right)^{2}} \right.\right)
 \end{equation*}
 you can see, that the approximation's components are all transformed copies of
-the numerator variable. So it takes our ``uniform'' distribution and copies it
-everywhere, but the copies' distributions are so narrow, that they have no
+the numerator variable. So it takes the ``uniform'' distribution and copies it
+everywhere, but the copied distributions are so narrow, that they have no
 overlap at all, and it looks like a forest of lonely firs. If you look closely,
 the components' variances even make sense. The distributions are narrow and
 high, where the actual distributions is high, and small and wide, where it is
@@ -1364,7 +1365,7 @@ flat.
     \includegraphics[width=\textwidth]{thesis/complex/reciprocal-x}
     \caption{A mixture of Gaussians}
   \end{subfigure}
-  \caption{The $1$ and the variable to divide it by}
+  \caption{Our $1$ and the variable to divide it by}
   \label{fig:reciprocal-vars}
 \end{figure}
 \begin{figure}[h]

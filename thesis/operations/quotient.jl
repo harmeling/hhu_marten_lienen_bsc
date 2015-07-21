@@ -19,14 +19,14 @@ clf()
 
 samples = map(/, rand(amodel, n), rand(bmodel, n))
 
-for n = [1, 2, 5, 50]
+for n = [2]
     alg = Transforms.GaussHermiteQuadrature(n)
     a = Transforms.RandomVariable(amodel, alg)
     b = Transforms.RandomVariable(bmodel, alg)
     c = a / b
 
     plot_histogram(samples, range, bins=400)
-    plot(X, pdf(c.distribution, X), label="a * b",
+    plot(X, pdf(c.distribution, X), label="a / b",
          lw=3, alpha=0.8, color="red")
     legend()
     savefig("quotient-$n-components.png")
