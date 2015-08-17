@@ -1,0 +1,105 @@
+#+TITLE: Berechnungen mit beliebig verteilten Zufallsgrößen
+
+* Das Problem
+# Titelfolie
+
+In dieser Arbeit haben wir nach einer Moeglichkeit gesucht, in
+Computerprogrammen mit beliebig verteilten Zufallsgrößen zu rechnen als waeren
+es ganz normale Gleitkommazahlen. Und es stellt sich heraus, dass das fuer
+manchen Funktionen wirklich funktioniert.
+
+# Folie mit 3 Graphen (Z mit Fragezeichen)
+
+Man befindet sich also in der Situation, dass man mehrere zufaellig verteilte
+Eingaben hat, z.B. dieses X und Y, mit denen man einen weiteren Wert Z
+ausrechnen moechte, bzw. dessen Verteilung. Die Berechnung kriegt den Namen f
+und ist eine Funktion von zwei Variablen.
+
+# Analytische Loesung
+
+Eine etablierte Methode wuerde dieses Problem analytisch angehen. Man kann die
+Verteilung von Z naemlich als Integral schreiben und wenn man dieses loesen
+kann, bekommt man eine exakte Loesung heraus. Oft ist dies aber sehr
+rechenaufwendig oder gar nicht moeglich und man muss die verbleibenden Integrale
+mit numerischen Methoden approximieren.
+
+# Samplingloesung
+
+Eine andere Herangehensweise, die besonders im Bereich der Probabilistic
+Programming Languages vorangetrieben wird, ist das Sampling. Hierbei rechnet man
+direkt mit den Rohdaten weiter anstatt mit Wahrscheinlichkeitsverteilungen und
+benutzt dann Sample-Statistik und Histogramme um die Ergebnisse
+auszuwerten. Dies hat den grossen Vorteil, dass man Sampling auf alle Funktionen
+anwenden kann, die man auch auf normale Zahlen anwenden kann. Wenn man genug
+Daten hat, kann man so zwar die wahre Verteilung des Ergebnisses beliebig genau
+annaehern, aber dafuer muss man auch viel rechnen und das Ergebnis wird durch
+die gesamte Menge an Samples repraesentiert. Es kann also schwierig werden
+Zwischenergebnisse im Speicher zu halten.
+
+* Unsere Herangehensweise
+# Analytisch + Symbolisch = ?
+
+Es waere doch schoen, wenn man beides haben koennte. Einerseits moechte man mit
+symbolischen Repraesentationen rechnen, weil es oft performanter ist, deren
+Parameter anzupassen, andererseits moechte man mit zufallsverteilten Variablen
+rechnen als ob es normale Zahlen waeren.
+
+# Unser Algorithmus 1) Approximate 2) Compute
+
+Unsere Idee dazu ist, grob gesagt, eine allgemein verwendbare Repraesentation
+von Wahrscheinlichkeitsverteilungen zu finden, mit der man gut rechnen
+kann. Dann geht man in zwei Schritten vor: Zuerst wandelt man alle
+Eingabeverteilungen in die gute Repraesentation um. Dann fuehrt man mit diesen
+die eigentliche Rechnung durch.
+
+# Mischverteilungen erklaeren
+
+Unsere Kandidaten dafuer sind Mischverteilungen, insbesondere Mischungen von
+Gaussverteilungen.
+
+Die koennen alles annaehern.
+
+...
+
+# Wir koennen alles in Gauss-Mischungen umwandeln (EM)
+
+# Mischungen sind abgeschlossen
+
+# Normalverteilungen sind abgeschlossen gegen affine Transformationen
+
+# Wir haben tolle Approximationen fuer * und /
+
+# Einschraenkungen und offene Fragen / Evaluation
+
+- Variablen muessen unabhaengig sein
+- etc.
+
+# Live Demos?
+
+# Fragen?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+* Mögliche Anwendungsbereiche
