@@ -6,7 +6,8 @@ function plot_histogram(samples, range; bins=200, label="Samples", lw=3)
     # Select samples, that are in range
     inrange = filter(s -> range[1] <= s <= range[2], samples)
 
-    histogram = hist(inrange, bins)[2]
+    binedges = linspace(range[1], range[2], bins + 1)
+    histogram = hist(inrange, binedges)[2]
 
     # Normalize to 1 over range
     w = (range[2] - range[1]) / bins
