@@ -168,7 +168,7 @@ variables, which you assume to be Gaussian distributed. The sum's distribution
 can be worked out formally through basic analysis, which can even be done by
 hand.
 \begin{equation*}
-  X \sim \mathcal{N}(\mu, \sigma) \qquad Y \sim \mathcal{N}(\nu, \tau) \qquad \Rightarrow \qquad Z = X + Y \sim \mathcal{N}(\mu + \nu, \sigma + \tau)
+  X \sim \mathcal{N}(\mu, \sigma^{2}) \qquad Y \sim \mathcal{N}(\nu, \tau^{2}) \qquad \Rightarrow \qquad Z = X + Y \sim \mathcal{N}(\mu + \nu, \sigma^{2} + \tau^{2})
 \end{equation*}
 
 Most cases however are not manageable without the assistance of computing
@@ -703,7 +703,7 @@ and $Z = X \cdot Y$ their product. Then $Z$ is distributed as follows
 \end{align*}
 
 We would like to write this as a mixture of Gaussians, i.e.
-$\sum_{i} \alpha_{i} \cdot \mathcal{N}(\mu_{i}, \sigma_{i})$. Gaussian
+$\sum_{i} \alpha_{i} \cdot \mathcal{N}(\mu_{i}, \sigma^{2}_{i})$. Gaussian
 quadrature comes to mind, a family of numerical integration algorithms, that
 approximate
 \begin{equation*}
@@ -1436,19 +1436,19 @@ dependent on each other in non-trivial ways.
 
   There are infinitely many functions, that are valid probability distributions,
   but only some of them are important and get a name. One of them is the
-  Gaussian distribution, symbolized with $\mathcal{N}(\mu, \sigma)$. It has two
-  parameters, the mean $\mu$ and the variance $\sigma$. The former tells you,
-  which value is the most probable, while the latter says, how fast numbers get
-  less probable the farther they are from $\mu$.
+  Gaussian distribution, symbolized with $\mathcal{N}(\mu, \sigma^{2})$. It has
+  two parameters, the mean $\mu$ and the variance $\sigma^{2}$. The former tells
+  you, which value is the most probable, while the latter says, how fast numbers
+  get less probable the farther they are from $\mu$.
 
-  The notation $X \sim \mathcal{N}(\mu, \sigma)$ means, that the random variable
-  $X$ has the associated distribution $\mathcal{N}$ with parameters $\mu$ and
-  $\sigma$. The function, that tells you, how high the probability density is at
-  $x$, i.e. how probable $x$ is, is written $p(X = x)$. To determine this, $p$
-  plugs the value $x$ into the associated distribution of $X$. In this case we
-  have
+  The notation $X \sim \mathcal{N}(\mu, \sigma^{2})$ means, that the random
+  variable $X$ has the associated distribution $\mathcal{N}$ with parameters
+  $\mu$ and $\sigma^{2}$. The function, that tells you, how high the probability
+  density is at $x$, i.e. how probable $x$ is, is written $p(X = x)$. To
+  determine this, $p$ plugs the value $x$ into the associated distribution of
+  $X$. In this case we have
   \begin{equation*}
-    p(X = x) = \mathcal{N}\left( x \mid \mu, \sigma \right) = \frac{1}{\sqrt{2 \pi \sigma^{2}}} \exp \left( - \frac{(x - \mu)^{2}}{2\sigma^{2}} \right)
+    p(X = x) = \mathcal{N}\left( x \mid \mu, \sigma^{2} \right) = \frac{1}{\sqrt{2 \pi \sigma^{2}}} \exp \left( - \frac{(x - \mu)^{2}}{2\sigma^{2}} \right)
   \end{equation*}
   The term in the middle is an alias for $p(X = x)$ if the distribution of $X$
   is known or you want to put it into the reader's focus.
